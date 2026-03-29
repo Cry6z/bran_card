@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>yoo</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Anonymous+Pro:ital,wght@0,400;0,700;1,400;1,700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <!-- Video Background -->
+    <video autoplay loop muted playsinline class="bg-video">
+        <source src="Timeline 2.mp4" type="video/mp4">
+    </video>
+
+    <!-- Entry Overlay -->
+    <div id="entry-screen" onclick="enterSite()">
+        <p>Click Anywhere to Enter</p>
+    </div>
+
+    <!-- Impact Frame Overlay -->
+    <div id="impact-screen" style="display: none;">
+        <h1 class="impact-text text-1">yoo</h1>
+        <h1 class="impact-text text-2">i am</h1>
+    </div>
+    <audio id="impact-sound" src="Impact.mp3"></audio>
+
+    <div class="container" id="main-container" style="display: none;">
+
+        <!-- Left Side: Profile Info -->
+        <div class="profile-column">
+            <!-- Profile Header -->
+            <div class="profile-wrapper">
+                <div class="pulse-ring"></div>
+                <img src="agib.png" alt="Gibran Profile" class="profile-img" onclick="toggleZoom()">
+            </div>
+
+            <div class="header-text">
+                <div class="name-wrapper">
+                    <h1 class="name">Gibran</h1>
+                </div>
+                <p class="bio">Halo! ich heisse Gibran. Wie geht's?</p>
+            </div>
+
+        </div>
+
+        <div class="divider"></div>
+
+        <!-- Right Side: Links List -->
+        <div class="links-column">
+            <div class="links-container">
+                <a href="http://strxdale-catalog.vercel.app/" class="link-card" target="_blank">
+                    <div class="link-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <line x1="2" y1="12" x2="22" y2="12"></line>
+                            <path
+                                d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z">
+                            </path>
+                        </svg>
+                    </div>
+                    <span class="link-text">strxdale's catalog</span>
+                    <div class="link-arrow">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                            <polyline points="12 5 19 12 12 19"></polyline>
+                        </svg>
+                    </div>
+                </a>
+
+                <a href="https://github.com/Cry6z" class="link-card" target="_blank">
+                    <div class="link-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <path
+                                d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22">
+                            </path>
+                        </svg>
+                    </div>
+                    <span class="link-text">GitHub</span>
+                    <div class="link-arrow">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                            <polyline points="12 5 19 12 12 19"></polyline>
+                        </svg>
+                    </div>
+                </a>
+
+                <a href="https://www.instagram.com/verlorenbran" class="link-card" target="_blank">
+                    <div class="link-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                            <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                            <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+                        </svg>
+                    </div>
+                    <span class="link-text">Instagram</span>
+                    <div class="link-arrow">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                            <polyline points="12 5 19 12 12 19"></polyline>
+                        </svg>
+                    </div>
+                </a>
+
+                <a href="https://steamcommunity.com/profiles/76561199165908964/" class="link-card" target="_blank">
+                    <div class="link-icon">
+                        <img src="icons/steam.png" alt="Steam"
+                            style="width: 22px; height: 22px; filter: brightness(0) invert(1);">
+                    </div>
+                    <span class="link-text">Steam</span>
+                    <div class="link-arrow">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                            <polyline points="12 5 19 12 12 19"></polyline>
+                        </svg>
+                    </div>
+                </a>
+
+                <a href="https://www.roblox.com/users/634367340/profile" class="link-card" target="_blank">
+                    <div class="link-icon">
+                        <img src="icons/roblox.png" alt="Roblox"
+                            style="width: 22px; height: 22px; filter: brightness(0) invert(1);">
+                    </div>
+                    <span class="link-text">Roblox</span>
+                    <div class="link-arrow">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                            <polyline points="12 5 19 12 12 19"></polyline>
+                        </svg>
+                    </div>
+                </a>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Lightbox Overlay -->
+    <div id="lightbox" class="lightbox" onclick="toggleZoom()">
+        <img src="agib.png" class="lightbox-img">
+    </div>
+
+    <!-- Floating Music Player -->
+    <div class="music-player" id="music-player" style="display: none;">
+        <div class="player-content">
+            <div class="album-art-wrapper">
+                <img src="disk.png" alt="Album Art" id="album-art" class="album-art">
+                <div class="album-hole"></div>
+            </div>
+            <div class="song-info">
+                <p class="song-title">Nama Lagu</p>
+                <p class="song-artist">Nama Artis</p>
+            </div>
+            <div class="player-controls">
+                <button class="control-btn" onclick="prevSong()">
+                    <svg viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M6 6h2v12H6zm3.5 6l8.5 6V6z" />
+                    </svg>
+                </button>
+                <button id="play-btn" class="play-btn" onclick="togglePlay()">
+                    <svg id="play-icon" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M8 5v14l11-7z" />
+                    </svg>
+                    <svg id="pause-icon" viewBox="0 0 24 24" fill="currentColor" style="display: none;">
+                        <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z" />
+                    </svg>
+                </button>
+                <button class="control-btn" onclick="nextSong()">
+                    <svg viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z" />
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <!-- Progress Bar -->
+        <div class="progress-container">
+            <span id="current-time">0:00</span>
+            <input type="range" id="progress-bar" class="progress-bar" value="0" step="0.1" oninput="seekAudio()">
+            <span id="total-time">0:00</span>
+        </div>
+        <audio id="bg-music" onended="nextSong()" ontimeupdate="updateProgress()" onloadedmetadata="setMetadata()">
+            <source src="" type="audio/mpeg">
+        </audio>
+    </div>
+
+    <script>
+        function toggleZoom() {
+            var lightbox = document.getElementById('lightbox');
+            lightbox.classList.toggle('active');
+        }
+
+        // Playlist Lagu: Isi 3 lagu Anda di sini!
+        const playlist = [
+            { title: "Late Night Drive", artist: "AdTurnUp", src: "music/latenightdrive.mp3", cover: "disk/latenightdrive.png" },
+            { title: "Midnight Club", artist: "AdTurnUp", src: "music/midnightclub.mp3", cover: "disk/midnightclub.png" },
+            { title: "9PM In La", artist: "AdTurnUp", src: "music/9pmla.mp3", cover: "disk/9pmla.png" }
+        ];
+        let currentSongIndex = 0;
+
+        function loadSong(index) {
+            var audio = document.getElementById('bg-music');
+            var albumArt = document.getElementById('album-art');
+
+            document.querySelector('.song-title').innerText = playlist[index].title;
+            document.querySelector('.song-artist').innerText = playlist[index].artist;
+            albumArt.src = playlist[index].cover;
+
+            var isPlaying = !audio.paused && audio.currentTime > 0;
+            audio.src = playlist[index].src;
+
+            if (isPlaying) {
+                audio.play();
+            }
+        }
+
+        function nextSong() {
+            currentSongIndex = (currentSongIndex + 1) % playlist.length;
+            loadSong(currentSongIndex);
+
+            var audio = document.getElementById('bg-music');
+            var isPlaying = document.getElementById('pause-icon').style.display === 'block';
+            if (isPlaying) audio.play();
+        }
+
+        function prevSong() {
+            currentSongIndex = (currentSongIndex - 1 + playlist.length) % playlist.length;
+            loadSong(currentSongIndex);
+
+            var audio = document.getElementById('bg-music');
+            var isPlaying = document.getElementById('pause-icon').style.display === 'block';
+            if (isPlaying) audio.play();
+        }
+
+        function enterSite() {
+            var entryScreen = document.getElementById('entry-screen');
+            var impactScreen = document.getElementById('impact-screen');
+
+            // Play Impact Sound
+            var impactSound = document.getElementById('impact-sound');
+            if (impactSound) impactSound.play().catch(e => console.log(e));
+
+            // Mulai Impact Sequence
+            entryScreen.style.display = 'none';
+            impactScreen.style.display = 'flex';
+
+            // Paksa reflow agar CSS animation mutlak berjalan
+            void impactScreen.offsetWidth;
+            impactScreen.classList.add('active');
+
+            // Muat lagu pertama di latar belakang
+            loadSong(0);
+
+            // Putar video awal-awal
+            var video = document.querySelector('.bg-video');
+            if (video) video.play();
+
+            // 550ms = waktu tepat saat animasi kilatan teks ke-2 sudah nyaris hilang
+            setTimeout(function () {
+                document.getElementById('main-container').style.display = 'flex';
+                document.getElementById('music-player').style.display = 'flex'; // Munculkan player melayang
+
+                // Auto play music tepat saat card naik!
+                var audio = document.getElementById('bg-music');
+                if (audio) {
+                    audio.play().catch(e => console.log("Auto-play ditahan browser"));
+                    document.getElementById('play-icon').style.display = 'none';
+                    document.getElementById('pause-icon').style.display = 'block';
+                    document.getElementById('album-art').style.animationPlayState = 'running';
+                }
+
+                // Bersihkan DOM impact screen setelah animasi 100% selesai
+                setTimeout(() => impactScreen.style.display = 'none', 200);
+            }, 550);
+        }
+
+        function togglePlay() {
+            var audio = document.getElementById('bg-music');
+            var playIcon = document.getElementById('play-icon');
+            var pauseIcon = document.getElementById('pause-icon');
+            var albumArt = document.getElementById('album-art');
+
+            if (!audio.src || audio.src === window.location.href) {
+                loadSong(currentSongIndex);
+            }
+
+            if (audio.paused) {
+                audio.play();
+                playIcon.style.display = 'none';
+                pauseIcon.style.display = 'block';
+                albumArt.style.animationPlayState = 'running';
+            } else {
+                audio.pause();
+                playIcon.style.display = 'block';
+                pauseIcon.style.display = 'none';
+                albumArt.style.animationPlayState = 'paused';
+            }
+        }
+
+        // --- Fitur Progress Bar Spotify Style ---
+        function updateProgress() {
+            var audio = document.getElementById('bg-music');
+            var progressBar = document.getElementById('progress-bar');
+            var currentTimeEl = document.getElementById('current-time');
+
+            if (audio.duration) {
+                var progress = (audio.currentTime / audio.duration) * 100;
+                progressBar.value = progress;
+                currentTimeEl.innerText = formatTime(audio.currentTime);
+            }
+        }
+
+        function setMetadata() {
+            var audio = document.getElementById('bg-music');
+            var totalTimeEl = document.getElementById('total-time');
+            var progressBar = document.getElementById('progress-bar');
+            totalTimeEl.innerText = formatTime(audio.duration);
+            progressBar.value = 0;
+            document.getElementById('current-time').innerText = "0:00";
+        }
+
+        function seekAudio() {
+            var audio = document.getElementById('bg-music');
+            var progressBar = document.getElementById('progress-bar');
+            var seekTime = (progressBar.value / 100) * audio.duration;
+            audio.currentTime = seekTime;
+        }
+
+        function formatTime(seconds) {
+            if (isNaN(seconds)) return "0:00";
+            var min = Math.floor(seconds / 60);
+            var sec = Math.floor(seconds % 60);
+            if (sec < 10) sec = '0' + sec;
+            return min + ':' + sec;
+        }
+    </script>
+</body>
+
+</html>
