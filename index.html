@@ -208,7 +208,7 @@
             { title: "Midnight Club", artist: "AdTurnUp", src: "music/midnightclub.mp3", cover: "disk/midnightclub.png" },
             { title: "9PM In La", artist: "AdTurnUp", src: "music/9pmla.mp3", cover: "disk/9pmla.png" }
         ];
-        let currentSongIndex = 0;
+        let currentSongIndex = Math.floor(Math.random() * playlist.length);
 
         function loadSong(index) {
             var audio = document.getElementById('bg-music');
@@ -260,8 +260,8 @@
             void impactScreen.offsetWidth;
             impactScreen.classList.add('active');
 
-            // Muat lagu pertama di latar belakang
-            loadSong(0);
+            // Muat lagu acak di latar belakang
+            loadSong(currentSongIndex);
 
             // Putar video awal-awal
             var video = document.querySelector('.bg-video');
