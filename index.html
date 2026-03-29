@@ -68,7 +68,7 @@
         <!-- Right Side: Links List -->
         <div class="links-column">
             <div class="links-container">
-                <a href="http://strxdale-catalog.vercel.app/" class="link-card" target="_blank">
+                <a href="http://strxdale-catalog.vercel.app/" class="link-card" target="_blank" data-preview="preview/catalog.png">
                     <div class="link-icon">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                             stroke-linecap="round" stroke-linejoin="round">
@@ -89,7 +89,7 @@
                     </div>
                 </a>
 
-                <a href="https://github.com/Cry6z" class="link-card" target="_blank">
+                <a href="https://github.com/Cry6z" class="link-card" target="_blank" data-preview="preview/github.png">
                     <div class="link-icon">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                             stroke-linecap="round" stroke-linejoin="round">
@@ -108,7 +108,7 @@
                     </div>
                 </a>
 
-                <a href="https://www.instagram.com/verlorenbran" class="link-card" target="_blank">
+                <a href="https://www.instagram.com/verlorenbran" class="link-card" target="_blank" data-preview="preview/ig.png">
                     <div class="link-icon">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                             stroke-linecap="round" stroke-linejoin="round">
@@ -127,7 +127,7 @@
                     </div>
                 </a>
 
-                <a href="https://steamcommunity.com/profiles/76561199165908964/" class="link-card" target="_blank">
+                <a href="https://steamcommunity.com/profiles/76561199165908964/" class="link-card" target="_blank" data-preview="preview/steam.png">
                     <div class="link-icon">
                         <img src="icons/steam.png" alt="Steam"
                             style="width: 22px; height: 22px; filter: brightness(0) invert(1);">
@@ -142,7 +142,7 @@
                     </div>
                 </a>
 
-                <a href="https://www.roblox.com/users/634367340/profile" class="link-card" target="_blank">
+                <a href="https://www.roblox.com/users/634367340/profile" class="link-card" target="_blank" data-preview="preview/roblox.png">
                     <div class="link-icon">
                         <img src="icons/roblox.png" alt="Roblox"
                             style="width: 22px; height: 22px; filter: brightness(0) invert(1);">
@@ -209,16 +209,25 @@
         </audio>
     </div>
 
+    <!-- Link Card Hover Preview (Foreshadow) -->
+    <div id="link-preview" class="link-preview">
+        <img src="" id="preview-img" alt="Preview Gambar">
+    </div>
+
     <!-- Bottom Right Controls -->
     <div id="bottom-right-controls" class="bottom-right-controls" style="display: none;">
         <span class="quote-text" id="quote-text"></span>
         <button id="zen-btn" class="zen-btn" onclick="toggleZenMode()" title="Sembunyikan Kartu">
-            <svg id="eye-open" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <svg id="eye-open" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round">
                 <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
                 <circle cx="12" cy="12" r="3"></circle>
             </svg>
-            <svg id="eye-closed" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display: none;">
-                <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path>
+            <svg id="eye-closed" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round" style="display: none;">
+                <path
+                    d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24">
+                </path>
                 <line x1="1" y1="1" x2="23" y2="23"></line>
             </svg>
         </button>
@@ -308,7 +317,7 @@
                 container.style.display = 'flex';
                 container.classList.add('loaded');
                 document.getElementById('music-player').style.display = 'flex'; // Munculkan player melayang
-                
+
                 var controls = document.getElementById('bottom-right-controls');
                 controls.style.display = 'flex';
                 controls.classList.add('visible'); // Munculkan credits & tombol Zen
@@ -393,7 +402,7 @@
             var card = document.getElementById('main-container');
             var eyeOpen = document.getElementById('eye-open');
             var eyeClosed = document.getElementById('eye-closed');
-            
+
             if (card.classList.contains('hidden')) {
                 // Turn off zen mode (show card)
                 card.classList.remove('hidden');
@@ -417,11 +426,11 @@
             '"aku suka blyat"',
             '"when yh.."'
         ];
-        
+
         let quoteIndex = 0;
         let charIndex = 0;
         let isDeleting = false;
-        
+
         function typeWriter() {
             const currentQuote = quotes[quoteIndex];
             const quoteEl = document.getElementById('quote-text');
@@ -458,11 +467,11 @@
             cardStartX = e.clientX;
             isCardDragging = true;
             // Prevent default drag agar gambar tidak terseret secara native
-            e.preventDefault(); 
+            e.preventDefault();
         });
 
         profileCard.addEventListener('mouseup', (e) => {
-            if(!isCardDragging) return;
+            if (!isCardDragging) return;
             isCardDragging = false;
             let cardEndX = e.clientX;
             handleCardPhysics(cardStartX, cardEndX, e.target);
@@ -474,7 +483,7 @@
         });
 
         profileCard.addEventListener('touchend', (e) => {
-            if(!isCardDragging) return;
+            if (!isCardDragging) return;
             isCardDragging = false;
             let cardEndX = e.changedTouches[0].screenX;
             handleCardPhysics(cardStartX, cardEndX, e.target);
@@ -482,16 +491,53 @@
 
         function handleCardPhysics(start, end, targetElem) {
             const swipeDistance = Math.abs(end - start);
-            
+
             // Jika digeser lebih dari 20px -> MUTER
             if (swipeDistance > 20) {
                 profileCard.classList.toggle('flipped');
-            } 
+            }
             // Jika cuma ditekan singkat (klik biasa) -> BUKA LIGHTBOX
             else if (targetElem.tagName === 'IMG') {
                 toggleZoom(targetElem.src);
             }
         }
+
+        // --- Fitur Foreshadow (Gambar Preview saat Link di-Hover) ---
+        const previewBox = document.getElementById('link-preview');
+        const previewImg = document.getElementById('preview-img');
+        const linksElems = document.querySelectorAll('.link-card');
+
+        linksElems.forEach(link => {
+            link.addEventListener('mouseenter', (e) => {
+                const previewSrc = link.getAttribute('data-preview');
+                // Hanya munculkan jika data-preview memiliki file diatur
+                if (previewSrc && previewSrc.trim() !== "") {
+                    previewImg.src = previewSrc;
+                    // INISIALISASI POSISI SEGERA agar kotak tidak terjebak di luar layar
+                    previewBox.style.left = (e.clientX + 15) + 'px';
+                    previewBox.style.top = (e.clientY + 15) + 'px';
+                    previewBox.classList.add('visible');
+                }
+            });
+
+            link.addEventListener('mousemove', (e) => {
+                if (previewBox.classList.contains('visible')) {
+                    // Geser kotak preview selalu 15px menghindari tumpukan kursor
+                    previewBox.style.left = (e.clientX + 15) + 'px';
+                    previewBox.style.top = (e.clientY + 15) + 'px';
+                }
+            });
+
+            link.addEventListener('mouseleave', () => {
+                previewBox.classList.remove('visible');
+                // Sembunyikan gambar sesaat setelah transisi memudar (200ms)
+                setTimeout(() => {
+                    if (!previewBox.classList.contains('visible')) {
+                        previewImg.src = '';
+                    }
+                }, 200);
+            });
+        });
     </script>
 </body>
 

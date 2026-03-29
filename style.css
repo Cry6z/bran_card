@@ -419,6 +419,37 @@ body::before {
     text-decoration: underline;
 }
 
+/* --- Foreshadow Preview Overlay --- */
+.link-preview {
+    position: fixed;
+    pointer-events: none; /* Mencegah preview memblokir klik kursor */
+    z-index: 9999;
+    opacity: 0;
+    transform: scale(0.8) translateY(10px);
+    transition: opacity 0.2s ease, transform 0.2s ease;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    width: 250px;
+    background: rgba(0, 0, 0, 0.4);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    will-change: transform, left, top;
+}
+
+.link-preview.visible {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+}
+
+.link-preview img {
+    width: 100%;
+    height: auto;
+    display: block;
+    object-fit: cover;
+}
+
 /* Lightbox */
 .lightbox {
     position: fixed;
@@ -460,7 +491,32 @@ body::before {
 /* Responsive: switch back to vertical on narrow screens */
 @media (max-width: 768px) {
     :root {
-        --glass-blur: blur(12px); /* Meringankan beban GPU HP secara dramatis */
+        --glass-blur: none; /* Matikan TOTAL efek blur tembus kaca di HP */
+    }
+
+    body {
+        background-color: #0d1117; /* Warna fallback gelap elegan saat CPU diistirahatkan */
+    }
+
+    /* MATIKAN VIDEO: Pembunuh baterai & pembuat Lag no. 1 di HP */
+    .bg-video {
+        display: none !important;
+    }
+
+    /* GANTI BOX BLUR MENJADI WARNA SOLID AGAR TETAP TERLIHAT MEWAH NAMUN 0% GPU LOAD */
+    .container, 
+    .music-player, 
+    .link-card, 
+    .bottom-right-controls {
+        backdrop-filter: none !important;
+        -webkit-backdrop-filter: none !important;
+        background: rgba(22, 27, 34, 0.95) !important; /* Warna dark solid layaknya efek kaca buram */
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7) !important; /* Pertajam bayangan tanpa memberatkan CPU */
+    }
+
+    /* Matikan animasi bergetar terus-menerus */
+    .pulse-ring {
+        display: none !important;
     }
 
     body {
