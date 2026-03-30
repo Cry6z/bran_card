@@ -1014,6 +1014,7 @@ body::before {
     font-weight: 300;
     color: #fff;
     letter-spacing: 0.4em;
+    text-indent: 0.4em; /* Menghilangkan efek 'pushed to the left' akibat letter-spacing */
     opacity: 0;
     transform: scale(0.9);
     transition: all 1.2s cubic-bezier(0.22, 1, 0.36, 1);
@@ -1355,6 +1356,7 @@ body::before {
     font-weight: 800;
     color: #fff;
     letter-spacing: 0.2em;
+    text-indent: 0.2em; /* Balancing center */
     text-shadow: 0 0 30px rgba(255, 255, 255, 0.5);
     margin: 0;
 }
@@ -1415,6 +1417,7 @@ body::before {
     font-weight: 400;
     color: #fff;
     letter-spacing: 0.3em;
+    text-indent: 0.3em; /* Balancing center */
     opacity: 0;
     transform: translateY(20px);
     transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
@@ -1446,5 +1449,35 @@ body::before {
         left: 50%;
         bottom: 1rem;
         transform: translateX(-50%);
+    }
+
+    /* Transition Screens Mobile Adjustments */
+    .hello-text {
+        font-size: 1.8rem;
+        letter-spacing: 0.25em;
+        text-indent: 0.25em;
+        text-align: center;
+        padding: 0 1rem;
+    }
+
+    .nc-text {
+        font-size: 1.4rem;
+        letter-spacing: 0.1em;
+        text-indent: 0.1em;
+        text-align: center;
+        padding: 0 1rem;
+    }
+
+    .nc-checkmark {
+        width: 45px;
+        height: 45px;
+    }
+
+    .vw-text {
+        font-size: 1.8rem;
+        letter-spacing: 0.2em;
+        text-indent: 0.2em;
+        text-align: center;
+        padding: 0 1rem;
     }
 }
