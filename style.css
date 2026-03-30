@@ -1480,4 +1480,132 @@ body::before {
         text-align: center;
         padding: 0 1rem;
     }
+
+    /* Response Screen Mobile */
+    .res-question {
+        font-size: 1.5rem;
+        padding: 0 1.5rem;
+    }
+
+    .res-options {
+        flex-direction: column;
+        gap: 1.25rem;
+        width: 100%;
+        padding: 0 2rem;
+    }
+
+    .res-btn {
+        width: 100%;
+        padding: 0.8rem 1.5rem;
+        font-size: 1rem;
+        text-align: center;
+    }
 }
+
+
+/* --- Impact Visual Effects --- */
+#flash-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #fff;
+    z-index: 5000;
+    pointer-events: none;
+    opacity: 0;
+}
+
+#flash-overlay.active {
+    animation: flashEffect 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes flashEffect {
+    0% { opacity: 0.8; }
+    100% { opacity: 0; }
+}
+
+.impact-shake {
+    animation: shake 0.5s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+    transform: translate3d(0, 0, 0);
+    backface-visibility: hidden;
+    perspective: 1000px;
+}
+
+@keyframes shake {
+    10%, 90% { transform: translate3d(-1px, 1px, 0); }
+    20%, 80% { transform: translate3d(2px, -2px, 0); }
+    30%, 50%, 70% { transform: translate3d(-4px, 4px, 0); }
+    40%, 60% { transform: translate3d(4px, -4px, 0); }
+}
+
+/* --- Response Selection Scene --- */
+#response-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 2600;
+    background: #000;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    transition: opacity 0.8s ease;
+}
+
+#response-screen.visible {
+    opacity: 1;
+}
+
+.res-content {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+    align-items: center;
+}
+
+.res-question {
+    font-size: 2rem;
+    font-weight: 300;
+    letter-spacing: 0.2em;
+    color: #fff;
+    opacity: 0;
+    transform: translateY(20px);
+}
+
+#response-screen.visible .res-question {
+    animation: fadeInUpGeneric 0.8s forwards;
+}
+
+.res-options {
+    display: flex;
+    gap: 2rem;
+    opacity: 0;
+}
+
+#response-screen.visible .res-options {
+    animation: fadeInUpGeneric 0.8s 0.3s forwards;
+}
+
+.res-btn {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    color: #fff;
+    padding: 1rem 2.5rem;
+    font-size: 1.1rem;
+    border-radius: 99px;
+    cursor: pointer;
+    backdrop-filter: blur(10px);
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.res-btn:hover {
+    background: #fff;
+    color: #000;
+    transform: translateY(-5px) scale(1.05);
+    box-shadow: 0 10px 40px rgba(255, 255, 255, 0.2);
+}
+

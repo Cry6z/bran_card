@@ -22,18 +22,25 @@
 
     <!-- Entry Overlay -->
     <div id="entry-screen" onclick="enterSite()">
-        <p>Touch!</p>
+        <p>touch!</p>
     </div>
 
     <!-- Hello Text Overlay -->
     <div id="hello-screen" style="display: none;">
         <h1 class="hello-text">hello</h1>
     </div>
-    <audio id="impact-sound" src="Impact.mp3"></audio>
-    <audio id="ding-sound" src="ding.mp3"></audio>
-    <audio id="hello-voice" src="Hello.mp3"></audio>
-    <audio id="ready-voice" src="Lets%20get%20ready!.mp3"></audio>
-    <audio id="welcome-voice" src="welcome!.mp3"></audio>
+    <audio id="impact-sound" src="sound_effect/flash.mp3"></audio>
+    <audio id="ding-sound" src="sound_effect/ding.mp3"></audio>
+    <audio id="hello-voice" src="voice/Hello.mp3"></audio>
+    <audio id="ready-voice" src="voice/Letsgetready!.mp3"></audio>
+    <audio id="ready-voice-2" src="voice/howareyoutoday.mp3"></audio>
+    <audio id="welcome-voice" src="voice/welcome!.mp3"></audio>
+    <audio id="good-voice-1" src="good/good1.mp3"></audio>
+    <audio id="good-voice-2" src="good/good2.mp3"></audio>
+    <audio id="good-voice-3" src="good/good3.mp3"></audio>
+    <audio id="bad-voice-1" src="bad/bad1.mp3"></audio>
+    <audio id="bad-voice-2" src="bad/bad2.mp3"></audio>
+    <audio id="bad-voice-3" src="bad/bad3.mp3"></audio>
 
     <!-- Now Playing Scene (Cinematic Transition) -->
     <div id="now-playing-screen" style="display: none;">
@@ -72,6 +79,20 @@
             <h1 class="vw-text">welcome!</h1>
         </div>
     </div>
+
+    <!-- Response Selection Scene -->
+    <div id="response-screen" style="display: none;">
+        <div class="res-content">
+            <h2 class="res-question">how are you today?</h2>
+            <div class="res-options">
+                <button class="res-btn" onclick="selectResponse('fine')">very good!</button>
+                <button class="res-btn" onclick="selectResponse('bad')">very bad...</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Flash Overlay for Impact -->
+    <div id="flash-overlay"></div>
 
     <div class="container" id="main-container" style="display: none;">
 
@@ -305,6 +326,66 @@
     </div>
 
     <script>
+        function selectResponse(response) {
+            const responseScreen = document.getElementById('response-screen');
+            const fineVoice = document.getElementById('fine-voice');
+
+            // Fade out response screen
+            responseScreen.style.opacity = '0';
+            setTimeout(() => {
+                responseScreen.style.display = 'none';
+            }, 800);
+
+            // Play voice response
+            if (response === 'fine') {
+                // Pilih salah satu dari 3 suara "good" secara acak
+                const goodVoices = ['good-voice-1', 'good-voice-2', 'good-voice-3'];
+                const selectedGoodVoiceId = goodVoices[Math.floor(Math.random() * goodVoices.length)];
+                const selectedGoodVoice = document.getElementById(selectedGoodVoiceId);
+
+                if (selectedGoodVoice) {
+                    selectedGoodVoice.currentTime = 0;
+                    selectedGoodVoice.play().catch(e => console.log(e));
+                }
+            } else if (response === 'bad') {
+                // Pilih salah satu dari 3 suara "bad" secara acak
+                const badVoices = ['bad-voice-1', 'bad-voice-2', 'bad-voice-3'];
+                const selectedBadVoiceId = badVoices[Math.floor(Math.random() * badVoices.length)];
+                const selectedBadVoice = document.getElementById(selectedBadVoiceId);
+
+                if (selectedBadVoice) {
+                    selectedBadVoice.currentTime = 0;
+                    selectedBadVoice.play().catch(e => console.log(e));
+                }
+            }
+
+            // Continue to Dashboard sequence
+            setTimeout(startDashboardSequence, 1200);
+        }
+
+        function triggerImpact() {
+            var impactSound = document.getElementById('impact-sound');
+            var flash = document.getElementById('flash-overlay');
+            var container = document.getElementById('main-container');
+
+            if (impactSound) {
+                impactSound.currentTime = 0;
+                impactSound.play().catch(e => console.log("Impact sound failed: ", e));
+            }
+
+            // Flash Effect
+            if (flash) {
+                flash.classList.add('active');
+                setTimeout(() => flash.classList.remove('active'), 500);
+            }
+
+            // Shake Effect
+            if (container) {
+                container.classList.add('impact-shake');
+                setTimeout(() => container.classList.remove('impact-shake'), 600);
+            }
+        }
+
         function toggleZoom(src) {
             var lightbox = document.getElementById('lightbox');
             var lightboxImg = document.getElementById('lightbox-img');
@@ -430,98 +511,126 @@
                 helloScreen.classList.remove('visible');
                 helloScreen.classList.add('fade-out');
                 
-                // Play "Let's Get Ready" Voice
-                var readyVoice = document.getElementById('ready-voice');
+                // Play Random Ready Voice (Let's Get Ready or Alternative)
+                const readyVoices = ['ready-voice', 'ready-voice-2'];
+                const selectedVoiceId = readyVoices[Math.floor(Math.random() * readyVoices.length)];
+                const readyVoice = document.getElementById(selectedVoiceId);
+                
                 if (readyVoice) {
                     readyVoice.currentTime = 0;
-                    readyVoice.play().catch(e => console.log(e));
+                    readyVoice.play().catch(e => console.log("Voice failed to play: ", e));
                 }
 
-                // 3. Play Now Playing Scene (Bar Filling)
-                npScreen.style.display = 'flex';
-                void npScreen.offsetWidth;
-                npScreen.classList.add('active');
-
-                // 4. Setelah 2.5 detik (Bar Penuh), Berhenti Sejenak Sebelum Pindah ke Scene "you're connected"
-                setTimeout(function () {
-                    // Tahan sejenak bar yang sudah penuh agar terlihat tuntas (800ms)
-                    setTimeout(function () {
-                        // Animasi Keluar untuk Scene Loading
-                        npScreen.classList.add('exit');
-
-                        setTimeout(function () {
-                            npScreen.style.display = 'none';
-
-                            var connectedScreen = document.getElementById('connected-screen');
-                            connectedScreen.style.display = 'flex';
-                            void connectedScreen.offsetWidth;
-                            connectedScreen.classList.add('visible');
-
-                            // PLAY DING SOUND SAAT TERHUBUNG
-                            var dingSound = document.getElementById('ding-sound');
-                            if (dingSound) dingSound.play().catch(e => console.log(e));
-
-                            // 5. Setelah 1.2 detik (Scene Connected Selesai), Pindah ke Scene "welcome!"
-                            setTimeout(function () {
-                                connectedScreen.style.opacity = '0';
-
-                                setTimeout(function () {
-                                    connectedScreen.style.display = 'none';
-
-                                    var welcomeScreen = document.getElementById('welcome-screen');
-                                    welcomeScreen.style.display = 'flex';
-                                    void welcomeScreen.offsetWidth;
-                                    welcomeScreen.classList.add('visible');
-
-                                    // Play Welcome Voice
-                                    var welcomeVoice = document.getElementById('welcome-voice');
-                                    if (welcomeVoice) {
-                                        welcomeVoice.currentTime = 0;
-                                        welcomeVoice.play().catch(e => console.log(e));
-                                    }
-
-                                    // 6. Akhirnya masuk Dashboard dari scene "welcome!"
-                                    setTimeout(function () {
-                                        welcomeScreen.style.opacity = '0';
-
-                                        setTimeout(function () {
-                                            welcomeScreen.style.display = 'none';
-                                            helloScreen.style.display = 'none';
-
-                                    // DASHBOARD LOADING
-                                    container.style.display = 'flex';
-                                    container.classList.add('loaded');
-
-                                    // REVEAL & PLAY VIDEO SEKARANG
-                                    if (video) {
-                                        video.style.opacity = '1';
-                                        video.play();
-                                    }
-
-                                    musicPlayer.style.display = 'flex';
-                                    loadSong(currentSongIndex);
-
-                                    controls.style.display = 'flex';
-                                    controls.classList.add('visible');
-
-                                    setTimeout(typeWriter, 1200);
-
-                                    // MULAILAH MUSIK UTAMA
-                                    var audio = document.getElementById('bg-music');
-                                    if (audio) {
-                                        audio.play().catch(e => console.log("Auto-play ditahan"));
-                                        document.getElementById('play-icon').style.display = 'none';
-                                        document.getElementById('pause-icon').style.display = 'block';
-                                        document.getElementById('album-art').style.animationPlayState = 'running';
-                                    }
-                                }, 600); // Waktu memudar scene welcome
-                                    }, 1200); // Tahan scene welcome selama 1.2 detik
-                                }, 400); // Jeda transisi antar scene confirmation
-                            }, 1200); // Tahan scene connected selama 1.2 detik
-                        }, 800); // Waktu yang diberikan untuk animasi keluar npScreen (800ms sync dengan CSS)
-                    }, 800); // Pause tambahan (800ms) setelah bar 100%
-                }, 2500); // 2.5 detik untuk loading bar
+                // If "how are you today" is selected, show options
+                if (selectedVoiceId === 'ready-voice-2') {
+                    setTimeout(() => {
+                        var responseScreen = document.getElementById('response-screen');
+                        responseScreen.style.display = 'flex';
+                        void responseScreen.offsetWidth;
+                        responseScreen.classList.add('visible');
+                    }, 800);
+                } else {
+                    // Direct to Dashboard sequence
+                    startDashboardSequence();
+                }
             }, 1100);
+        }
+
+        function startDashboardSequence() {
+            var npScreen = document.getElementById('now-playing-screen');
+            var container = document.getElementById('main-container');
+            var musicPlayer = document.getElementById('music-player');
+            var controls = document.getElementById('bottom-right-controls');
+            var helloScreen = document.getElementById('hello-screen');
+            var video = document.querySelector('.bg-video');
+
+            // 3. Play Now Playing Scene (Bar Filling)
+            npScreen.style.display = 'flex';
+            void npScreen.offsetWidth;
+            npScreen.classList.add('active');
+
+            // 4. Setelah 2.5 detik (Bar Penuh), Berhenti Sejenak Sebelum Pindah ke Scene "you're connected"
+            setTimeout(function () {
+                // Tahan sejenak bar yang sudah penuh agar terlihat tuntas (800ms)
+                setTimeout(function () {
+                    // Animasi Keluar untuk Scene Loading
+                    npScreen.classList.add('exit');
+
+                    setTimeout(function () {
+                        npScreen.style.display = 'none';
+
+                        var connectedScreen = document.getElementById('connected-screen');
+                        connectedScreen.style.display = 'flex';
+                        void connectedScreen.offsetWidth;
+                        connectedScreen.classList.add('visible');
+
+                        // PLAY DING SOUND SAAT TERHUBUNG
+                        var dingSound = document.getElementById('ding-sound');
+                        if (dingSound) dingSound.play().catch(e => console.log(e));
+
+                        // 5. Setelah 1.2 detik (Scene Connected Selesai), Pindah ke Scene "welcome!"
+                        setTimeout(function () {
+                            connectedScreen.style.opacity = '0';
+
+                            setTimeout(function () {
+                                connectedScreen.style.display = 'none';
+
+                                var welcomeScreen = document.getElementById('welcome-screen');
+                                welcomeScreen.style.display = 'flex';
+                                void welcomeScreen.offsetWidth;
+                                welcomeScreen.classList.add('visible');
+
+                                // Play Welcome Voice
+                                var welcomeVoice = document.getElementById('welcome-voice');
+                                if (welcomeVoice) {
+                                    welcomeVoice.currentTime = 0;
+                                    welcomeVoice.play().catch(e => console.log(e));
+                                }
+
+                                // 6. Akhirnya masuk Dashboard dari scene "welcome!"
+                                setTimeout(function () {
+                                    welcomeScreen.style.opacity = '0';
+
+                                    setTimeout(function () {
+                                        welcomeScreen.style.display = 'none';
+                                        helloScreen.style.display = 'none';
+
+                                // DASHBOARD LOADING
+                                container.style.display = 'flex';
+                                container.classList.add('loaded');
+                                
+                                // TRIGGER IMPACT EFFECT
+                                triggerImpact();
+
+                                // REVEAL & PLAY VIDEO SEKARANG
+                                if (video) {
+                                    video.style.opacity = '1';
+                                    video.play();
+                                }
+
+                                musicPlayer.style.display = 'flex';
+                                loadSong(currentSongIndex);
+
+                                controls.style.display = 'flex';
+                                controls.classList.add('visible');
+
+                                setTimeout(typeWriter, 1200);
+
+                                // MULAILAH MUSIK UTAMA
+                                var audio = document.getElementById('bg-music');
+                                if (audio) {
+                                    audio.play().catch(e => console.log("Auto-play ditahan"));
+                                    document.getElementById('play-icon').style.display = 'none';
+                                    document.getElementById('pause-icon').style.display = 'block';
+                                    document.getElementById('album-art').style.animationPlayState = 'running';
+                                }
+                            }, 600); // Waktu memudar scene welcome
+                                }, 1200); // Tahan scene welcome selama 1.2 detik
+                            }, 400); // Jeda transisi antar scene confirmation
+                        }, 1200); // Tahan scene connected selama 1.2 detik
+                    }, 800); // Waktu yang diberikan untuk animasi keluar npScreen (800ms sync dengan CSS)
+                }, 800); // Pause tambahan (800ms) setelah bar 100%
+            }, 2500); // 2.5 detik untuk loading bar
         }
 
 
