@@ -69,7 +69,8 @@
         <!-- Right Side: Links List -->
         <div class="links-column">
             <div class="links-container">
-                <a href="http://strxdale-catalog.vercel.app/" class="link-card" target="_blank" data-preview="preview/catalog.png">
+                <a href="http://strxdale-catalog.vercel.app/" class="link-card" target="_blank"
+                    data-preview="preview/catalog.png">
                     <div class="link-icon">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                             stroke-linecap="round" stroke-linejoin="round">
@@ -109,7 +110,8 @@
                     </div>
                 </a>
 
-                <a href="https://www.instagram.com/verlorenbran" class="link-card" target="_blank" data-preview="preview/ig.png">
+                <a href="https://www.instagram.com/verlorenbran" class="link-card" target="_blank"
+                    data-preview="preview/ig.png">
                     <div class="link-icon">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                             stroke-linecap="round" stroke-linejoin="round">
@@ -128,7 +130,8 @@
                     </div>
                 </a>
 
-                <a href="https://steamcommunity.com/profiles/76561199165908964/" class="link-card" target="_blank" data-preview="preview/steam.png">
+                <a href="https://steamcommunity.com/profiles/76561199165908964/" class="link-card" target="_blank"
+                    data-preview="preview/steam.png">
                     <div class="link-icon">
                         <img src="icons/steam.png" alt="Steam"
                             style="width: 22px; height: 22px; filter: brightness(0) invert(1);">
@@ -143,7 +146,8 @@
                     </div>
                 </a>
 
-                <a href="https://www.roblox.com/users/634367340/profile" class="link-card" target="_blank" data-preview="preview/roblox.png">
+                <a href="https://www.roblox.com/users/634367340/profile" class="link-card" target="_blank"
+                    data-preview="preview/roblox.png">
                     <div class="link-icon">
                         <img src="icons/roblox.png" alt="Roblox"
                             style="width: 22px; height: 22px; filter: brightness(0) invert(1);">
@@ -175,8 +179,7 @@
                 <div class="album-hole"></div>
             </div>
             <div class="song-info">
-                <span class="playlist-badge" onclick="switchPlaylist()" title="Ganti Playlist" id="playlist-name">ADTurnUp Mix</span>
-                <p class="song-title">Nama Lagu</p>
+                <p class="song-title"><span>Nama Lagu</span></p>
                 <p class="song-artist">Nama Artis</p>
             </div>
             <div class="player-controls">
@@ -248,64 +251,53 @@
             }
         }
 
-        // Multi-Playlist Database: Khusus 2 Playlist (ADTurnUp & siggerr)
-        const allPlaylists = [
-            {
-                name: "ADTurnUp Mix",
-                songs: [
-                    { title: "Late Night Drive", artist: "ADTurnUp", src: "music/latenightdrive.mp3", cover: "disk/latenightdrive.png" },
-                    { title: "Midnight Club", artist: "ADTurnUp", src: "music/midnightclub.mp3", cover: "disk/midnightclub.png" },
-                    { title: "9PM In LA", artist: "ADTurnUp", src: "music/9pmla.mp3", cover: "disk/9pmla.png" },
-                    { title: "stargirl", artist: "ADTurnUp", src: "music/stargirl.mp3", cover: "disk/stargirl.png" },
-                    { title: "heavenly ahh beat (slowed)", artist: "ADTurnUp", src: "music/heavenly.mp3", cover: "disk/heavenly.png" }
-                ]
-            },
-            {
-                name: "siggerr Mix",
-                songs: [
-                    // Silakan isi lagu-lagu siggerr di sini:
-                    { title: "Turned Away", artist: "siggerr", src: "music/turnedaway.mp3", cover: "disk/turnedaway.png" },
-                    { title: "Come Back With Me", artist: "siggerr", src: "music/comeback.mp3", cover: "disk/comeback.png" },
-                    { title: "One Day", artist: "siggerr", src: "music/oneday.mp3", cover: "disk/oneday.png" },
-                    { title: "Still Fall In Love", artist: "siggerr", src: "music/stillfallinlove.mp3", cover: "disk/stillfallinlove.png" }
-                ]
-            }
+        // --- Playlist Database (Single Playlist) ---
+        const playlist = [
+            { title: "Late Night Drive", artist: "ADTurnUp", src: "music/latenightdrive.mp3", cover: "disk/latenightdrive.png" },
+            { title: "Midnight Club", artist: "ADTurnUp", src: "music/midnightclub.mp3", cover: "disk/midnightclub.png" },
+            { title: "9PM In LA", artist: "ADTurnUp", src: "music/9pmla.mp3", cover: "disk/9pmla.png" },
+            { title: "stargirl", artist: "ADTurnUp", src: "music/stargirl.mp3", cover: "disk/stargirl.png" },
+            { title: "heavenly ahh beat (slowed)", artist: "ADTurnUp", src: "music/heavenly.mp3", cover: "disk/heavenly.png" }
         ];
 
-        let currentPlaylistIndex = 0;
-        let playlist = allPlaylists[currentPlaylistIndex].songs;
         let currentSongIndex = Math.floor(Math.random() * playlist.length);
-
-        function switchPlaylist() {
-            // Lompat ke playlist selanjutnya (akan balik ke 0 jika sudah di akhir)
-            currentPlaylistIndex = (currentPlaylistIndex + 1) % allPlaylists.length;
-            playlist = allPlaylists[currentPlaylistIndex].songs;
-            
-            // Re-acak lagu agar tidak membosankan saat pindah playlist
-            currentSongIndex = Math.floor(Math.random() * playlist.length);
-            
-            // Cek apakah musiknya sedang jalan atau tidak
-            var audio = document.getElementById('bg-music');
-            var isPlaying = !audio.paused && audio.currentTime > 0;
-            // Fallback checking button state on slow buffers
-            if (audio.paused) isPlaying = document.getElementById('pause-icon').style.display === 'block';
-
-            loadSong(currentSongIndex);
-            
-            if (isPlaying) {
-                audio.play();
-            }
-        }
 
         function loadSong(index) {
             var audio = document.getElementById('bg-music');
             var albumArt = document.getElementById('album-art');
+            var songTitleContainer = document.querySelector('.song-title');
+            var songTitleSpan = songTitleContainer.querySelector('span');
 
-            // Perbarui NAMA badge playlist dan metadata teksnya
-            document.getElementById('playlist-name').innerText = allPlaylists[currentPlaylistIndex].name;
-            document.querySelector('.song-title').innerText = playlist[index].title;
+            const title = playlist[index].title;
+
+            // Metadata Update
+            songTitleSpan.innerText = title;
             document.querySelector('.song-artist').innerText = playlist[index].artist;
             albumArt.src = playlist[index].cover;
+
+            // Reset Marquee
+            songTitleContainer.classList.remove('marquee');
+            songTitleSpan.innerHTML = title; 
+
+            // Kita tunggu sejenak agar browser memproses perubahan teks sebelum dihitung lebarnya
+            setTimeout(() => {
+                const textWidth = songTitleSpan.offsetWidth;
+                const containerWidth = songTitleContainer.offsetWidth;
+
+                if (textWidth > containerWidth) {
+                    const pixelsPerSecond = 22; // Pelan (sesuai request)
+                    const overflow = textWidth - containerWidth;
+                    const scrollDuration = textWidth / pixelsPerSecond;
+                    
+                    // Karena scrolling berlangsung di persentase 15% - 75% (total 60% dari durasi)
+                    const totalDuration = scrollDuration / 0.6;
+                    
+                    // Simpan variabel jarak geser tepat di ujung teks (untuk stop di "slowed")
+                    songTitleSpan.style.setProperty('--scroll-distance', `-${overflow + 2}px`);
+                    songTitleContainer.style.setProperty('--marquee-duration', `${totalDuration}s`);
+                    songTitleContainer.classList.add('marquee');
+                }
+            }, 50);
 
             var isPlaying = !audio.paused && audio.currentTime > 0;
             audio.src = playlist[index].src;
@@ -314,6 +306,7 @@
                 audio.play();
             }
         }
+
 
         function nextSong() {
             currentSongIndex = (currentSongIndex + 1) % playlist.length;
@@ -349,9 +342,6 @@
             void impactScreen.offsetWidth;
             impactScreen.classList.add('active');
 
-            // Muat lagu acak di latar belakang
-            loadSong(currentSongIndex);
-
             // Putar video awal-awal
             var video = document.querySelector('.bg-video');
             if (video) video.play();
@@ -361,7 +351,11 @@
                 var container = document.getElementById('main-container');
                 container.style.display = 'flex';
                 container.classList.add('loaded');
-                document.getElementById('music-player').style.display = 'flex'; // Munculkan player melayang
+                
+                // Munculkan player melayang
+                document.getElementById('music-player').style.display = 'flex'; 
+                // Muat lagu SETELAH player tampil agar ukurannya terbaca (marquee check)
+                loadSong(currentSongIndex); 
 
                 var controls = document.getElementById('bottom-right-controls');
                 controls.style.display = 'flex';
@@ -382,6 +376,7 @@
                 setTimeout(() => impactScreen.style.display = 'none', 200);
             }, 550);
         }
+
 
         function togglePlay() {
             var audio = document.getElementById('bg-music');
@@ -415,6 +410,8 @@
             if (audio.duration) {
                 var progress = (audio.currentTime / audio.duration) * 100;
                 progressBar.value = progress;
+                // Update fill warna bar progres
+                progressBar.style.setProperty('--progress', `${progress}%`);
                 currentTimeEl.innerText = formatTime(audio.currentTime);
             }
         }
@@ -425,14 +422,18 @@
             var progressBar = document.getElementById('progress-bar');
             totalTimeEl.innerText = formatTime(audio.duration);
             progressBar.value = 0;
+            progressBar.style.setProperty('--progress', `0%`);
             document.getElementById('current-time').innerText = "0:00";
         }
 
         function seekAudio() {
             var audio = document.getElementById('bg-music');
             var progressBar = document.getElementById('progress-bar');
-            var seekTime = (progressBar.value / 100) * audio.duration;
+            var percent = progressBar.value;
+            var seekTime = (percent / 100) * audio.duration;
             audio.currentTime = seekTime;
+            // Update fill saat drag manual
+            progressBar.style.setProperty('--progress', `${percent}%`);
         }
 
         function formatTime(seconds) {
@@ -445,19 +446,22 @@
 
         function toggleZenMode() {
             var card = document.getElementById('main-container');
+            var musicPlayer = document.getElementById('music-player');
             var eyeOpen = document.getElementById('eye-open');
             var eyeClosed = document.getElementById('eye-closed');
 
             if (card.classList.contains('hidden')) {
-                // Turn off zen mode (show card)
+                // Matikan Zen Mode (Kembali Normal)
                 card.classList.remove('hidden');
-                card.classList.add('loaded'); // Trigger animation naik
+                card.classList.add('loaded');
+                musicPlayer.classList.remove('zen');
                 eyeOpen.style.display = 'block';
                 eyeClosed.style.display = 'none';
             } else {
-                // Turn on zen mode (hide card smoothly)
+                // Aktifkan Zen Mode
                 card.classList.remove('loaded');
-                card.classList.add('hidden'); // Trigger animation mengecil & turun
+                card.classList.add('hidden');
+                musicPlayer.classList.add('zen');
                 eyeOpen.style.display = 'none';
                 eyeClosed.style.display = 'block';
             }
@@ -465,10 +469,10 @@
 
         // --- Fitur Typewriter Quotes ---
         const quotes = [
-            '"p mabar pasmo"',
-            '"gibrangtg123"',
+            '"ingfokan mabar bareng"',
+            '"strxdale or tourvillone?"',
             '"hey kamu! ya kamu keren"',
-            '"aku suka blyat"',
+            '"aku suka.... ga tau"',
             '"when yh.."'
         ];
 
