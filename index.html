@@ -471,8 +471,11 @@
                                     container.style.display = 'flex';
                                     container.classList.add('loaded');
 
-                                    // PUTAR VIDEO BACKGROUND SEKARANG
-                                    if (video) video.play();
+                                    // REVEAL & PLAY VIDEO SEKARANG
+                                    if (video) {
+                                        video.style.opacity = '1';
+                                        video.play();
+                                    }
 
                                     musicPlayer.style.display = 'flex';
                                     loadSong(currentSongIndex);
