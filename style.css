@@ -145,8 +145,8 @@ body::before {
 
 /* 3D Flip Profile */
 .profile-flip-container {
-    width: 130px;
-    height: 130px;
+    width: 170px;
+    height: 170px;
     position: relative;
     z-index: 2;
     perspective: 1000px;
@@ -251,7 +251,37 @@ body::before {
     font-weight: 400;
     line-height: 1.5;
     max-width: 280px;
-    margin: 0 auto;
+    margin: 0 auto 1.25rem auto;
+}
+
+/* Profiles Tags */
+.tags-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.6rem;
+    margin-top: 0.5rem;
+    max-width: 320px;
+}
+
+.tag {
+    font-size: 0.72rem;
+    color: var(--text-primary);
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 0.35rem 0.8rem;
+    border-radius: 99px;
+    letter-spacing: 0.03em;
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    transition: all 0.3s ease;
+}
+
+.tag:hover {
+    background: rgba(255, 255, 255, 0.15);
+    border-color: rgba(255, 255, 255, 0.3);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
 }
 
 /* Links Section */
@@ -558,8 +588,8 @@ body::before {
     }
 
     .profile-flip-container {
-        width: 110px;
-        height: 110px;
+        width: 140px;
+        height: 140px;
     }
 
     .name {
@@ -581,7 +611,7 @@ body::before {
     align-items: center;
     z-index: 2000;
     cursor: pointer;
-    background: rgba(0, 0, 0, 0.4);
+    background: #000; /* Solid black transition */
     backdrop-filter: blur(4px);
     -webkit-backdrop-filter: blur(4px);
     transition: opacity 0.3s ease;
@@ -971,8 +1001,9 @@ body::before {
     z-index: 3000;
     justify-content: center;
     align-items: center;
-    background-color: transparent;
+    background-color: #000; /* Solid black transition */
     pointer-events: none;
+    transition: opacity 0.5s;
 }
 
 #impact-screen.active {
@@ -1144,5 +1175,332 @@ body::before {
         max-width: 200px;
         /* Lebar teks disesuaikan */
         font-size: 0.75rem;
+    }
+}
+
+/* --- Now Playing Cinematic Scene --- */
+#now-playing-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 2500;
+    background: #000; /* Solid black transition */
+    backdrop-filter: blur(40px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    transition: opacity 0.8s ease;
+}
+
+#now-playing-screen.active {
+    opacity: 1;
+}
+
+#now-playing-screen.exit {
+    opacity: 0;
+    transform: scale(1.1);
+    transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.np-content {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
+    transform: translateY(30px);
+    transition: transform 1s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+#now-playing-screen.active .np-content {
+    transform: translateY(0);
+}
+
+.np-label {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    letter-spacing: 0.6em;
+    font-weight: 700;
+    opacity: 0.7;
+    text-transform: uppercase;
+}
+
+.np-disc-wrapper {
+    position: relative;
+    width: 280px;
+    height: 280px;
+    border-radius: 50%;
+    box-shadow: 0 0 80px rgba(255, 255, 255, 0.1);
+    animation: zoomInDisc 1.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.np-disc-big {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 8px solid rgba(255, 255, 255, 0.05);
+    animation: spin 10s linear infinite;
+}
+
+.np-disc-hole {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 45px;
+    height: 45px;
+    background: #000;
+    border: 3px solid rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    box-shadow: inset 0 0 15px rgba(255, 255, 255, 0.3);
+}
+
+.np-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.np-title {
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 0.25rem;
+    text-shadow: 0 0 20px rgba(255, 255, 255, 0.4);
+    letter-spacing: 0.05em;
+    opacity: 0;
+    transform: translateY(20px);
+}
+
+#now-playing-screen.active .np-title {
+    animation: fadeInUpGeneric 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.6s forwards;
+}
+
+.np-artist {
+    font-size: 1.5rem;
+    color: var(--text-secondary);
+    opacity: 0;
+    font-style: italic;
+    transform: translateY(10px);
+}
+
+#now-playing-screen.active .np-artist {
+    animation: fadeInUpGeneric 0.8s cubic-bezier(0.16, 1, 0.3, 1) 1.2s forwards;
+}
+
+@keyframes fadeInUpGeneric {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes zoomInDisc {
+    from {
+        transform: scale(0.4) rotate(-90deg);
+        opacity: 0;
+    }
+
+    to {
+        transform: scale(1) rotate(0);
+        opacity: 1;
+    }
+}
+
+/* Response Mobile Now Playing */
+@media (max-width: 768px) {
+    .np-disc-wrapper {
+        width: 220px;
+        height: 220px;
+    }
+
+    .np-title {
+        font-size: 1.8rem;
+    }
+
+    .np-artist {
+        font-size: 1rem;
+    }
+}
+
+.np-progress-bar {
+    width: 250px;
+    height: 4px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 2px;
+    margin-top: 1.5rem;
+    overflow: hidden;
+}
+
+.np-progress-inner {
+    background: #fff;
+    width: 0%;
+    height: 100%;
+}
+
+#now-playing-screen.active .np-progress-inner {
+    animation: fillProgress 2.5s linear forwards;
+}
+
+@keyframes fillProgress {
+    to {
+        width: 100%;
+    }
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* No fade-in for real player during transition */
+.music-player.no-animate {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+}
+
+/* --- Connected Confirmation Screen --- */
+#connected-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 2600;
+    background: #000; /* Solid black transition */
+    backdrop-filter: blur(50px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+    pointer-events: none;
+}
+
+#connected-screen.visible {
+    opacity: 1;
+    pointer-events: all;
+}
+
+.nc-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+    transform: scale(0.9);
+    transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+#connected-screen.visible .nc-content {
+    transform: scale(1);
+}
+
+.nc-text {
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: #fff;
+    letter-spacing: 0.2em;
+    text-shadow: 0 0 30px rgba(255, 255, 255, 0.5);
+    margin: 0;
+}
+
+.nc-checkmark {
+    width: 60px;
+    height: 60px;
+    background: #fff;
+    color: #000;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 0 40px rgba(255, 255, 255, 0.4);
+    opacity: 0;
+}
+
+#connected-screen.visible .nc-checkmark {
+    animation: checkmark-scale 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.3s forwards;
+}
+
+@keyframes checkmark-scale {
+    from {
+        transform: scale(0) rotate(-45deg);
+        opacity: 0;
+    }
+    to {
+        transform: scale(1) rotate(0);
+        opacity: 1;
+    }
+}
+
+/* --- Welcome Screen --- */
+#welcome-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 2650;
+    background: #000; /* Solid black transition */
+    backdrop-filter: blur(60px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    pointer-events: none;
+}
+
+#welcome-screen.visible {
+    opacity: 1;
+    pointer-events: all;
+}
+
+.vw-text {
+    font-size: 3.5rem;
+    font-weight: 400;
+    color: #fff;
+    letter-spacing: 0.3em;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+#welcome-screen.visible .vw-text {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Mobile Adjustments */
+@media (max-width: 768px) {
+    .np-card {
+        width: 340px;
+        padding: 1.5rem;
+    }
+
+    .np-upper-section {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .np-disc-section {
+        width: 120px;
+        height: 120px;
+    }
+
+    #now-playing-screen.exit .np-card {
+        left: 50%;
+        bottom: 1rem;
+        transform: translateX(-50%);
     }
 }

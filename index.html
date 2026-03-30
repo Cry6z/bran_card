@@ -31,6 +31,45 @@
         <h1 class="impact-text text-2">i am</h1>
     </div>
     <audio id="impact-sound" src="Impact.mp3"></audio>
+    <audio id="ding-sound" src="ding.mp3"></audio>
+
+    <!-- Now Playing Scene (Cinematic Transition) -->
+    <div id="now-playing-screen" style="display: none;">
+        <div class="np-content">
+            <p class="np-label">PLAYING :</p>
+            <div class="np-disc-wrapper">
+                <img src="" id="np-disc" class="np-disc-big">
+                <div class="np-disc-hole"></div>
+            </div>
+            <div class="np-info">
+                <h2 id="np-title" class="np-title"></h2>
+                <p id="np-artist" class="np-artist"></p>
+            </div>
+            <div class="np-progress-bar">
+                <div class="np-progress-inner"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Connected Scene (Confirmation Transition) -->
+    <div id="connected-screen" style="display: none;">
+        <div class="nc-content">
+            <h1 class="nc-text">you're connected</h1>
+            <div class="nc-checkmark">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"
+                    stroke-linejoin="round">
+                    <polyline points="20 6 9 17 4 12"></polyline>
+                </svg>
+            </div>
+        </div>
+    </div>
+
+    <!-- Welcome Scene -->
+    <div id="welcome-screen" style="display: none;">
+        <div class="vw-content">
+            <h1 class="vw-text">welcome!</h1>
+        </div>
+    </div>
 
     <div class="container" id="main-container" style="display: none;">
 
@@ -60,6 +99,13 @@
                     <h1 class="name">Gibran</h1>
                 </div>
                 <p class="bio">verloren guy</p>
+                <div class="tags-container">
+                    <span class="tag"># gamer</span>
+                    <span class="tag"># design</span>
+                    <span class="tag"># code</span>
+                    <span class="tag"># skill_issue</span>
+                    <span class="tag"># noob</span>
+                </div>
             </div>
 
         </div>
@@ -137,6 +183,24 @@
                             style="width: 22px; height: 22px; filter: brightness(0) invert(1);">
                     </div>
                     <span class="link-text">Steam</span>
+                    <div class="link-arrow">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                            <polyline points="12 5 19 12 12 19"></polyline>
+                        </svg>
+                    </div>
+                </a>
+
+                <a href="https://open.spotify.com/user/31t4pdanvx27zaiw35tu2bmu5kqa" class="link-card" target="_blank"
+                    data-preview="preview/spotify.png">
+                    <div class="link-icon">
+                        <svg viewBox="0 0 24 24" fill="currentColor">
+                            <path
+                                d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.372 12-12S18.627 0 12 0zm5.502 17.31c-.218.358-.684.47-1.042.252-2.875-1.758-6.495-2.156-10.757-1.18-.41.093-.82-.16-.914-.572-.093-.41.16-.82.572-.914 4.656-1.066 8.653-.615 11.89 1.363.358.218.47.684.25 1.05zm1.468-3.26c-.274.444-.858.583-1.302.308-3.29-2.023-8.303-2.61-12.185-1.433-.497.15-1.025-.13-1.176-.628-.15-.497.13-1.025.628-1.176 4.436-1.347 9.965-.694 13.725 1.62.443.273.582.853.31 1.31zm.128-3.395c-3.947-2.344-10.463-2.56-14.253-1.408-.606.184-1.25-.164-1.434-.77-.184-.606.164-1.25.77-1.434 4.34-1.318 11.536-1.062 16.082 1.637.544.323.724 1.03.4 1.575-.323.544-1.03.723-1.565.4z" />
+                        </svg>
+                    </div>
+                    <span class="link-text">Spotify</span>
                     <div class="link-arrow">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                             stroke-linecap="round" stroke-linejoin="round">
@@ -256,8 +320,7 @@
             { title: "Late Night Drive", artist: "ADTurnUp", src: "music/latenightdrive.mp3", cover: "disk/latenightdrive.png" },
             { title: "Midnight Club", artist: "ADTurnUp", src: "music/midnightclub.mp3", cover: "disk/midnightclub.png" },
             { title: "9PM In LA", artist: "ADTurnUp", src: "music/9pmla.mp3", cover: "disk/9pmla.png" },
-            { title: "stargirl", artist: "ADTurnUp", src: "music/stargirl.mp3", cover: "disk/stargirl.png" },
-            { title: "heavenly ahh beat (slowed)", artist: "ADTurnUp", src: "music/heavenly.mp3", cover: "disk/heavenly.png" }
+            { title: "stargirl", artist: "ADTurnUp", src: "music/stargirl.mp3", cover: "disk/stargirl.png" }
         ];
 
         let currentSongIndex = Math.floor(Math.random() * playlist.length);
@@ -329,52 +392,112 @@
         function enterSite() {
             var entryScreen = document.getElementById('entry-screen');
             var impactScreen = document.getElementById('impact-screen');
+            var npScreen = document.getElementById('now-playing-screen');
+            var container = document.getElementById('main-container');
+            var musicPlayer = document.getElementById('music-player');
+            var controls = document.getElementById('bottom-right-controls');
 
             // Play Impact Sound
             var impactSound = document.getElementById('impact-sound');
             if (impactSound) impactSound.play().catch(e => console.log(e));
 
-            // Mulai Impact Sequence
+            // Start Impact Sequence
             entryScreen.style.display = 'none';
             impactScreen.style.display = 'flex';
-
-            // Paksa reflow agar CSS animation mutlak berjalan
-            void impactScreen.offsetWidth;
             impactScreen.classList.add('active');
 
-            // Putar video awal-awal
+            // Video akan diputar nanti saat dashboard muncul agar transisi tetap hitam
             var video = document.querySelector('.bg-video');
-            if (video) video.play();
 
-            // 550ms = waktu tepat saat animasi kilatan teks ke-2 sudah nyaris hilang
+            // Set Data for Now Playing Scene
+            const currentSong = playlist[currentSongIndex];
+            document.getElementById('np-disc').src = currentSong.cover;
+
+            // Buat efek muncul satu-satu (Staggered)
+            const npTitle = document.getElementById('np-title');
+            const npArtist = document.getElementById('np-artist');
+            npTitle.innerText = currentSong.title;
+            npArtist.innerText = currentSong.artist;
+
+            // 1. Durasi Impact Frame (Singkat)
             setTimeout(function () {
-                var container = document.getElementById('main-container');
-                container.style.display = 'flex';
-                container.classList.add('loaded');
+                impactScreen.style.opacity = '0';
 
-                // Munculkan player melayang
-                document.getElementById('music-player').style.display = 'flex';
-                // Muat lagu SETELAH player tampil agar ukurannya terbaca (marquee check)
-                loadSong(currentSongIndex);
+                // 3. Play Now Playing Scene (Bar Filling)
+                npScreen.style.display = 'flex';
+                void npScreen.offsetWidth;
+                npScreen.classList.add('active');
 
-                var controls = document.getElementById('bottom-right-controls');
-                controls.style.display = 'flex';
-                controls.classList.add('visible'); // Munculkan credits & tombol Zen
+                // 4. Setelah 2.5 detik (Bar Penuh), Berhenti Sejenak Sebelum Pindah ke Scene "you're connected"
+                setTimeout(function () {
+                    // Tahan sejenak bar yang sudah penuh agar terlihat tuntas (800ms)
+                    setTimeout(function () {
+                        // Animasi Keluar untuk Scene Loading
+                        npScreen.classList.add('exit');
 
-                setTimeout(typeWriter, 1500); // Mulai jalankan animasi Typewriter setelah konten muncul
+                        setTimeout(function () {
+                            npScreen.style.display = 'none';
 
-                // Auto play music tepat saat card naik!
-                var audio = document.getElementById('bg-music');
-                if (audio) {
-                    audio.play().catch(e => console.log("Auto-play ditahan browser"));
-                    document.getElementById('play-icon').style.display = 'none';
-                    document.getElementById('pause-icon').style.display = 'block';
-                    document.getElementById('album-art').style.animationPlayState = 'running';
-                }
+                            var connectedScreen = document.getElementById('connected-screen');
+                            connectedScreen.style.display = 'flex';
+                            void connectedScreen.offsetWidth;
+                            connectedScreen.classList.add('visible');
 
-                // Bersihkan DOM impact screen setelah animasi 100% selesai
-                setTimeout(() => impactScreen.style.display = 'none', 200);
-            }, 550);
+                            // PLAY DING SOUND SAAT TERHUBUNG
+                            var dingSound = document.getElementById('ding-sound');
+                            if (dingSound) dingSound.play().catch(e => console.log(e));
+
+                            // 5. Setelah 1.2 detik (Scene Connected Selesai), Pindah ke Scene "welcome!"
+                            setTimeout(function () {
+                                connectedScreen.style.opacity = '0';
+
+                                setTimeout(function () {
+                                    connectedScreen.style.display = 'none';
+
+                                    var welcomeScreen = document.getElementById('welcome-screen');
+                                    welcomeScreen.style.display = 'flex';
+                                    void welcomeScreen.offsetWidth;
+                                    welcomeScreen.classList.add('visible');
+
+                                    // 6. Akhirnya masuk Dashboard dari scene "welcome!"
+                                    setTimeout(function () {
+                                        welcomeScreen.style.opacity = '0';
+
+                                        setTimeout(function () {
+                                            welcomeScreen.style.display = 'none';
+                                            impactScreen.style.display = 'none';
+
+                                    // DASHBOARD LOADING
+                                    container.style.display = 'flex';
+                                    container.classList.add('loaded');
+
+                                    // PUTAR VIDEO BACKGROUND SEKARANG
+                                    if (video) video.play();
+
+                                    musicPlayer.style.display = 'flex';
+                                    loadSong(currentSongIndex);
+
+                                    controls.style.display = 'flex';
+                                    controls.classList.add('visible');
+
+                                    setTimeout(typeWriter, 1200);
+
+                                    // MULAILAH MUSIK UTAMA
+                                    var audio = document.getElementById('bg-music');
+                                    if (audio) {
+                                        audio.play().catch(e => console.log("Auto-play ditahan"));
+                                        document.getElementById('play-icon').style.display = 'none';
+                                        document.getElementById('pause-icon').style.display = 'block';
+                                        document.getElementById('album-art').style.animationPlayState = 'running';
+                                    }
+                                }, 600); // Waktu memudar scene welcome
+                                    }, 1200); // Tahan scene welcome selama 1.2 detik
+                                }, 400); // Jeda transisi antar scene confirmation
+                            }, 1200); // Tahan scene connected selama 1.2 detik
+                        }, 800); // Waktu yang diberikan untuk animasi keluar npScreen (800ms sync dengan CSS)
+                    }, 800); // Pause tambahan (800ms) setelah bar 100%
+                }, 2500); // 2.5 detik untuk loading bar
+            }, 600);
         }
 
 
@@ -471,9 +594,10 @@
         const quotes = [
             '"ingfokan mabar bareng"',
             '"strxdale or tourvillone?"',
-            '"hey kamu! ya kamu keren"',
-            '"aku suka.... ga tau"',
-            '"when yh.."'
+            '"hey kamu! ya, kamu keren!"',
+            '"aku suka.... eskrim"',
+            '"when yh...."',
+            '"skill issue btw"'
         ];
 
         let quoteIndex = 0;
