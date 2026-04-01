@@ -2,841 +2,321 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>bran</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Anonymous+Pro:ital,wght@0,400;0,700;1,400;1,700&display=swap"
-        rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
-    <link rel="icon" type="image/png" href="favicon.png">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bran | Digital Bio</title>
+  
+  <!-- SEO & Social Meta -->
+  <meta name="description" content="Gibran's personal digital bio and portfolio.">
+  <meta name="author" content="Gibran">
+  <meta property="og:title" content="Bran | Digital Bio">
+  <meta property="og:description" content="Personal space of a lost guy in the digital world.">
+  <meta property="og:image" content="agib.png">
+  
+  <!-- Fonts & Icons -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Anonymous+Pro:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/png" href="favicon.png">
+  
+  <!-- Content Styles -->
+  <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
-    <!-- Video Background -->
-    <video autoplay loop muted playsinline class="bg-video">
-        <source src="Timeline 2.mp4" type="video/mp4">
-    </video>
+  <!-- Ambient Background -->
+  <video autoplay loop muted playsinline class="bg-video">
+    <source src="Timeline 2.mp4" type="video/mp4">
+  </video>
 
-    <!-- Entry Overlay -->
-    <div id="entry-screen" onclick="enterSite()">
-        <p>touch!</p>
+  <!-- Interactive Overlays -->
+  <section id="entry-screen" onclick="enterSite()" aria-label="Enter site">
+    <p class="pulse-text">touch!</p>
+  </section>
+
+  <section id="hello-screen" class="transition-screen" style="display: none;">
+    <h1 class="hello-text">hello</h1>
+  </section>
+
+  <section id="response-screen" class="transition-screen" style="display: none;">
+    <div class="res-content">
+      <h2 class="res-question">how are you today?</h2>
+      <div class="res-options">
+        <button class="res-btn" onclick="selectResponse('fine')" aria-label="I am doing good">very good!</button>
+        <button class="res-btn" onclick="selectResponse('bad')" aria-label="I am doing bad">very bad...</button>
+      </div>
     </div>
+  </section>
 
-    <!-- Hello Text Overlay -->
-    <div id="hello-screen" style="display: none;">
-        <h1 class="hello-text">hello</h1>
+  <!-- Cinematic Transition Scenes -->
+  <section id="now-playing-screen" class="transition-screen" style="display: none;">
+    <div class="np-content">
+      <p class="np-label">PLAYING :</p>
+      <div class="np-disc-wrapper">
+        <img src="" id="np-disc" class="np-disc-big" alt="Album Disc">
+        <div class="np-disc-hole"></div>
+      </div>
+      <div class="np-info">
+        <h2 id="np-title" class="np-title"></h2>
+        <p id="np-artist" class="np-artist"></p>
+      </div>
+      <div class="np-progress-bar">
+        <div class="np-progress-inner"></div>
+      </div>
     </div>
-    <audio id="impact-sound" src="sound_effect/flash.mp3"></audio>
-    <audio id="ding-sound" src="sound_effect/ding.mp3"></audio>
-    <audio id="hello-voice" src="voice/Hello.mp3"></audio>
-    <audio id="ready-voice-2" src="voice/howareyoutoday.mp3"></audio>
-    <audio id="welcome-voice" src="voice/welcome!.mp3"></audio>
-    <audio id="good-voice-1" src="good/good1.mp3"></audio>
-    <audio id="good-voice-2" src="good/good2.mp3"></audio>
-    <audio id="good-voice-3" src="good/good3.mp3"></audio>
-    <audio id="bad-voice-1" src="bad/bad1.mp3"></audio>
-    <audio id="bad-voice-2" src="bad/bad2.mp3"></audio>
-    <audio id="bad-voice-3" src="bad/bad3.mp3"></audio>
+  </section>
 
-    <!-- Now Playing Scene (Cinematic Transition) -->
-    <div id="now-playing-screen" style="display: none;">
-        <div class="np-content">
-            <p class="np-label">PLAYING :</p>
-            <div class="np-disc-wrapper">
-                <img src="" id="np-disc" class="np-disc-big">
-                <div class="np-disc-hole"></div>
+  <section id="connected-screen" class="transition-screen" style="display: none;">
+    <div class="nc-content">
+      <h1 class="nc-text">you're connected</h1>
+      <div class="nc-checkmark">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="20 6 9 17 4 12"></polyline>
+        </svg>
+      </div>
+    </div>
+  </section>
+
+  <section id="welcome-screen" class="transition-screen" style="display: none;">
+    <div class="vw-content">
+      <h1 class="vw-text">welcome!</h1>
+    </div>
+  </section>
+
+  <!-- Visual Feedback -->
+  <div id="flash-overlay"></div>
+
+  <!-- Main Dashboard -->
+  <main class="container" id="main-container" style="display: none;">
+    
+    <!-- Left Side: Profile Info -->
+    <header class="profile-column">
+      <div class="profile-wrapper">
+        <div class="pulse-ring"></div>
+        
+        <!-- 3D Flip Profile -->
+        <div class="profile-flip-container" id="profile-card">
+          <div class="profile-flip-inner">
+            <!-- Front Face -->
+            <div class="profile-flip-front">
+              <img src="agib.png" alt="Gibran - Front Profile" class="profile-img">
             </div>
-            <div class="np-info">
-                <h2 id="np-title" class="np-title"></h2>
-                <p id="np-artist" class="np-artist"></p>
+            <!-- Back Face -->
+            <div class="profile-flip-back">
+              <img src="agib2.png" alt="Gibran - Alternate Profile" class="profile-img">
             </div>
-            <div class="np-progress-bar">
-                <div class="np-progress-inner"></div>
-            </div>
+          </div>
         </div>
-    </div>
+      </div>
 
-    <!-- Connected Scene (Confirmation Transition) -->
-    <div id="connected-screen" style="display: none;">
-        <div class="nc-content">
-            <h1 class="nc-text">you're connected</h1>
-            <div class="nc-checkmark">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"
-                    stroke-linejoin="round">
-                    <polyline points="20 6 9 17 4 12"></polyline>
-                </svg>
-            </div>
+      <div class="header-text">
+        <div class="name-wrapper">
+          <h1 class="name">Gibran</h1>
         </div>
-    </div>
-
-    <!-- Welcome Scene -->
-    <div id="welcome-screen" style="display: none;">
-        <div class="vw-content">
-            <h1 class="vw-text">welcome!</h1>
+        <p class="bio">verloren guy</p>
+        <div class="tags-container">
+          <span class="tag"># gamer</span>
+          <span class="tag"># design</span>
+          <span class="tag"># code</span>
+          <span class="tag"># skill_issue</span>
+          <span class="tag"># noob</span>
         </div>
-    </div>
+      </div>
+    </header>
 
-    <!-- Response Selection Scene -->
-    <div id="response-screen" style="display: none;">
-        <div class="res-content">
-            <h2 class="res-question">how are you today?</h2>
-            <div class="res-options">
-                <button class="res-btn" onclick="selectResponse('fine')">very good!</button>
-                <button class="res-btn" onclick="selectResponse('bad')">very bad...</button>
-            </div>
-        </div>
-    </div>
+    <div class="divider"></div>
 
-    <!-- Flash Overlay for Impact -->
-    <div id="flash-overlay"></div>
-
-    <div class="container" id="main-container" style="display: none;">
-
-        <!-- Left Side: Profile Info -->
-        <div class="profile-column">
-            <!-- Profile Header -->
-            <div class="profile-wrapper">
-                <div class="pulse-ring"></div>
-                <!-- 3D Flip Profile Container -->
-                <div class="profile-flip-container" id="profile-card">
-                    <div class="profile-flip-inner">
-                        <!-- Front (Foto Utama) -->
-                        <div class="profile-flip-front">
-                            <img src="agib.png" alt="Gibran Profile" class="profile-img">
-                        </div>
-                        <!-- Back (Foto Rahasia Cadangan) -->
-                        <div class="profile-flip-back">
-                            <!-- Ganti 'agib2.png' di bawah ini menjadi nama file foto kedua Anda -->
-                            <img src="agib2.png" alt="Gibran Alt Profile" class="profile-img">
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="header-text">
-                <div class="name-wrapper">
-                    <h1 class="name">Gibran</h1>
-                </div>
-                <p class="bio">verloren guy</p>
-                <div class="tags-container">
-                    <span class="tag"># gamer</span>
-                    <span class="tag"># design</span>
-                    <span class="tag"># code</span>
-                    <span class="tag"># skill_issue</span>
-                    <span class="tag"># noob</span>
-                </div>
-            </div>
-
-        </div>
-
-        <div class="divider"></div>
-
-        <!-- Right Side: Links List -->
-        <div class="links-column">
-            <div class="links-container">
-                <a href="http://strxdale-catalog.vercel.app/" class="link-card" target="_blank"
-                    data-preview="preview/catalog.png">
-                    <div class="link-icon">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                            stroke-linecap="round" stroke-linejoin="round">
-                            <circle cx="12" cy="12" r="10"></circle>
-                            <line x1="2" y1="12" x2="22" y2="12"></line>
-                            <path
-                                d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z">
-                            </path>
-                        </svg>
-                    </div>
-                    <span class="link-text">Catalog</span>
-                    <div class="link-arrow">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                            stroke-linecap="round" stroke-linejoin="round">
-                            <line x1="5" y1="12" x2="19" y2="12"></line>
-                            <polyline points="12 5 19 12 12 19"></polyline>
-                        </svg>
-                    </div>
-                </a>
-
-                <a href="https://github.com/Cry6z" class="link-card" target="_blank" data-preview="preview/github.png">
-                    <div class="link-icon">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                            stroke-linecap="round" stroke-linejoin="round">
-                            <path
-                                d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22">
-                            </path>
-                        </svg>
-                    </div>
-                    <span class="link-text">GitHub</span>
-                    <div class="link-arrow">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                            stroke-linecap="round" stroke-linejoin="round">
-                            <line x1="5" y1="12" x2="19" y2="12"></line>
-                            <polyline points="12 5 19 12 12 19"></polyline>
-                        </svg>
-                    </div>
-                </a>
-
-                <a href="https://www.instagram.com/verlorenbran" class="link-card" target="_blank"
-                    data-preview="preview/ig.png">
-                    <div class="link-icon">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                            stroke-linecap="round" stroke-linejoin="round">
-                            <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
-                            <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
-                            <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
-                        </svg>
-                    </div>
-                    <span class="link-text">Instagram</span>
-                    <div class="link-arrow">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                            stroke-linecap="round" stroke-linejoin="round">
-                            <line x1="5" y1="12" x2="19" y2="12"></line>
-                            <polyline points="12 5 19 12 12 19"></polyline>
-                        </svg>
-                    </div>
-                </a>
-
-                <a href="https://steamcommunity.com/profiles/76561199165908964/" class="link-card" target="_blank"
-                    data-preview="preview/steam.png">
-                    <div class="link-icon">
-                        <img src="icons/steam.png" alt="Steam"
-                            style="width: 22px; height: 22px; filter: brightness(0) invert(1);">
-                    </div>
-                    <span class="link-text">Steam</span>
-                    <div class="link-arrow">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                            stroke-linecap="round" stroke-linejoin="round">
-                            <line x1="5" y1="12" x2="19" y2="12"></line>
-                            <polyline points="12 5 19 12 12 19"></polyline>
-                        </svg>
-                    </div>
-                </a>
-
-                <a href="https://open.spotify.com/user/31t4pdanvx27zaiw35tu2bmu5kqa" class="link-card" target="_blank"
-                    data-preview="preview/spotify.png">
-                    <div class="link-icon">
-                        <svg viewBox="0 0 24 24" fill="currentColor">
-                            <path
-                                d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.372 12-12S18.627 0 12 0zm5.502 17.31c-.218.358-.684.47-1.042.252-2.875-1.758-6.495-2.156-10.757-1.18-.41.093-.82-.16-.914-.572-.093-.41.16-.82.572-.914 4.656-1.066 8.653-.615 11.89 1.363.358.218.47.684.25 1.05zm1.468-3.26c-.274.444-.858.583-1.302.308-3.29-2.023-8.303-2.61-12.185-1.433-.497.15-1.025-.13-1.176-.628-.15-.497.13-1.025.628-1.176 4.436-1.347 9.965-.694 13.725 1.62.443.273.582.853.31 1.31zm.128-3.395c-3.947-2.344-10.463-2.56-14.253-1.408-.606.184-1.25-.164-1.434-.77-.184-.606.164-1.25.77-1.434 4.34-1.318 11.536-1.062 16.082 1.637.544.323.724 1.03.4 1.575-.323.544-1.03.723-1.565.4z" />
-                        </svg>
-                    </div>
-                    <span class="link-text">Spotify</span>
-                    <div class="link-arrow">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                            stroke-linecap="round" stroke-linejoin="round">
-                            <line x1="5" y1="12" x2="19" y2="12"></line>
-                            <polyline points="12 5 19 12 12 19"></polyline>
-                        </svg>
-                    </div>
-                </a>
-
-                <a href="https://www.roblox.com/users/634367340/profile" class="link-card" target="_blank"
-                    data-preview="preview/roblox.png">
-                    <div class="link-icon">
-                        <img src="icons/roblox.png" alt="Roblox"
-                            style="width: 22px; height: 22px; filter: brightness(0) invert(1);">
-                    </div>
-                    <span class="link-text">Roblox</span>
-                    <div class="link-arrow">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                            stroke-linecap="round" stroke-linejoin="round">
-                            <line x1="5" y1="12" x2="19" y2="12"></line>
-                            <polyline points="12 5 19 12 12 19"></polyline>
-                        </svg>
-                    </div>
-                </a>
-            </div>
-        </div>
-
-    </div>
-
-    <!-- Lightbox Overlay -->
-    <div id="lightbox" class="lightbox" onclick="toggleZoom(null)">
-        <img src="agib.png" class="lightbox-img" id="lightbox-img">
-    </div>
-
-    <!-- Floating Music Player -->
-    <div class="music-player" id="music-player" style="display: none;">
-        <div class="player-content">
-            <div class="album-art-wrapper">
-                <img src="disk.png" alt="Album Art" id="album-art" class="album-art">
-                <div class="album-hole"></div>
-            </div>
-            <div class="song-info">
-                <p class="song-title"><span>Nama Lagu</span></p>
-                <p class="song-artist">Nama Artis</p>
-            </div>
-            <div class="player-controls">
-                <button class="control-btn" onclick="prevSong()">
-                    <svg viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M6 6h2v12H6zm3.5 6l8.5 6V6z" />
-                    </svg>
-                </button>
-                <button id="play-btn" class="play-btn" onclick="togglePlay()">
-                    <svg id="play-icon" viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M8 5v14l11-7z" />
-                    </svg>
-                    <svg id="pause-icon" viewBox="0 0 24 24" fill="currentColor" style="display: none;">
-                        <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z" />
-                    </svg>
-                </button>
-                <button class="control-btn" onclick="nextSong()">
-                    <svg viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z" />
-                    </svg>
-                </button>
-            </div>
-        </div>
-        <!-- Progress Bar -->
-        <div class="progress-container">
-            <span id="current-time">0:00</span>
-            <input type="range" id="progress-bar" class="progress-bar" value="0" step="0.1" oninput="seekAudio()">
-            <span id="total-time">0:00</span>
-        </div>
-        <audio id="bg-music" onended="nextSong()" ontimeupdate="updateProgress()" onloadedmetadata="setMetadata()">
-            <source src="" type="audio/mpeg">
-        </audio>
-    </div>
-
-    <!-- Link Card Hover Preview (Foreshadow) -->
-    <div id="link-preview" class="link-preview">
-        <img src="" id="preview-img" alt="Preview Gambar">
-    </div>
-
-    <!-- Bottom Right Controls -->
-    <div id="bottom-right-controls" class="bottom-right-controls" style="display: none;">
-        <span class="quote-text" id="quote-text"></span>
-        <button id="zen-btn" class="zen-btn" onclick="toggleZenMode()" title="Sembunyikan Kartu">
-            <svg id="eye-open" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                stroke-linecap="round" stroke-linejoin="round">
-                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
-                <circle cx="12" cy="12" r="3"></circle>
+    <!-- Right Side: Links Navigation -->
+    <nav class="links-column">
+      <div class="links-container">
+        
+        <a href="http://strxdale-catalog.vercel.app/" class="link-card" target="_blank" data-preview="preview/catalog.png">
+          <div class="link-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"></circle>
+              <line x1="2" y1="12" x2="22" y2="12"></line>
+              <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
             </svg>
-            <svg id="eye-closed" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                stroke-linecap="round" stroke-linejoin="round" style="display: none;">
-                <path
-                    d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24">
-                </path>
-                <line x1="1" y1="1" x2="23" y2="23"></line>
+          </div>
+          <span class="link-text">Catalog</span>
+          <div class="link-arrow">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+              <polyline points="12 5 19 12 12 19"></polyline>
             </svg>
+          </div>
+        </a>
+
+        <a href="https://github.com/Cry6z" class="link-card" target="_blank" data-preview="preview/github.png">
+          <div class="link-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
+            </svg>
+          </div>
+          <span class="link-text">GitHub</span>
+          <div class="link-arrow">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+              <polyline points="12 5 19 12 12 19"></polyline>
+            </svg>
+          </div>
+        </a>
+
+        <a href="https://www.instagram.com/verlorenbran" class="link-card" target="_blank" data-preview="preview/ig.png">
+          <div class="link-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+              <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+              <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+            </svg>
+          </div>
+          <span class="link-text">Instagram</span>
+          <div class="link-arrow">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+              <polyline points="12 5 19 12 12 19"></polyline>
+            </svg>
+          </div>
+        </a>
+
+        <a href="https://steamcommunity.com/profiles/76561199165908964/" class="link-card" target="_blank" data-preview="preview/steam.png">
+          <div class="link-icon">
+            <img src="icons/steam.png" alt="Steam" style="width: 22px; height: 22px; filter: brightness(0) invert(1);">
+          </div>
+          <span class="link-text">Steam</span>
+          <div class="link-arrow">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+              <polyline points="12 5 19 12 12 19"></polyline>
+            </svg>
+          </div>
+        </a>
+
+        <a href="https://open.spotify.com/user/31t4pdanvx27zaiw35tu2bmu5kqa" class="link-card" target="_blank" data-preview="preview/spotify.png">
+          <div class="link-icon">
+            <svg viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.372 12-12S18.627 0 12 0zm5.502 17.31c-.218.358-.684.47-1.042.252-2.875-1.758-6.495-2.156-10.757-1.18-.41.093-.82-.16-.914-.572-.093-.41.16-.82.572-.914 4.656-1.066 8.653-.615 11.89 1.363.358.218.47.684.25 1.05zm1.468-3.26c-.274.444-.858.583-1.302.308-3.29-2.023-8.303-2.61-12.185-1.433-.497.15-1.025-.13-1.176-.628-.15-.497.13-1.025.628-1.176 4.436-1.347 9.965-.694 13.725 1.62.443.273.582.853.31 1.31zm.128-3.395c-3.947-2.344-10.463-2.56-14.253-1.408-.606.184-1.25-.164-1.434-.77-.184-.606.164-1.25.77-1.434 4.34-1.318 11.536-1.062 16.082 1.637.544.323.724 1.03.4 1.575-.323.544-1.03.723-1.565.4z" />
+            </svg>
+          </div>
+          <span class="link-text">Spotify</span>
+          <div class="link-arrow">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+              <polyline points="12 5 19 12 12 19"></polyline>
+            </svg>
+          </div>
+        </a>
+
+        <a href="https://www.roblox.com/users/634367340/profile" class="link-card" target="_blank" data-preview="preview/roblox.png">
+          <div class="link-icon">
+            <img src="icons/roblox.png" alt="Roblox" style="width: 22px; height: 22px; filter: brightness(0) invert(1);">
+          </div>
+          <span class="link-text">Roblox</span>
+          <div class="link-arrow">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+              <polyline points="12 5 19 12 12 19"></polyline>
+            </svg>
+          </div>
+        </a>
+      </div>
+    </nav>
+  </main>
+
+  <!-- Audio Resources -->
+  <aside class="audio-assets">
+    <audio id="impact-sound" src="sound_effect/flash.mp3" preload="auto"></audio>
+    <audio id="ding-sound" src="sound_effect/ding.mp3" preload="auto"></audio>
+    <audio id="hello-voice" src="voice/Hello.mp3" preload="auto"></audio>
+    <audio id="ready-voice-2" src="voice/howareyoutoday.mp3" preload="auto"></audio>
+    <audio id="welcome-voice" src="voice/welcome!.mp3" preload="auto"></audio>
+    
+    <!-- Response Audio Groups -->
+    <div class="good-voices">
+      <audio id="good-voice-1" src="good/good1.mp3" preload="auto"></audio>
+      <audio id="good-voice-2" src="good/good2.mp3" preload="auto"></audio>
+      <audio id="good-voice-3" src="good/good3.mp3" preload="auto"></audio>
+    </div>
+    <div class="bad-voices">
+      <audio id="bad-voice-1" src="bad/bad1.mp3" preload="auto"></audio>
+      <audio id="bad-voice-2" src="bad/bad2.mp3" preload="auto"></audio>
+      <audio id="bad-voice-3" src="bad/bad3.mp3" preload="auto"></audio>
+    </div>
+  </aside>
+
+  <!-- Lightbox Overlay -->
+  <div id="lightbox" class="lightbox" onclick="toggleZoom(null)">
+    <img src="agib.png" class="lightbox-img" id="lightbox-img" alt="Enlarged profile view">
+  </div>
+
+  <!-- Perspective Music Player -->
+  <div class="music-player" id="music-player" style="display: none;">
+    <div class="player-content">
+      <div class="album-art-wrapper">
+        <img src="disk.png" alt="Album Art" id="album-art" class="album-art">
+        <div class="album-hole"></div>
+      </div>
+      <div class="song-info">
+        <p class="song-title"><span>Nama Lagu</span></p>
+        <p class="song-artist">Nama Artis</p>
+      </div>
+      <div class="player-controls">
+        <button class="control-btn" onclick="prevSong()" aria-label="Previous Song">
+          <svg viewBox="0 0 24 24" fill="currentColor">
+            <path d="M6 6h2v12H6zm3.5 6l8.5 6V6z" />
+          </svg>
         </button>
+        <button id="play-btn" class="play-btn" onclick="togglePlay()" aria-label="Play/Pause">
+          <svg id="play-icon" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M8 5v14l11-7z" />
+          </svg>
+          <svg id="pause-icon" viewBox="0 0 24 24" fill="currentColor" style="display: none;">
+            <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z" />
+          </svg>
+        </button>
+        <button class="control-btn" onclick="nextSong()" aria-label="Next Song">
+          <svg viewBox="0 0 24 24" fill="currentColor">
+            <path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z" />
+          </svg>
+        </button>
+      </div>
     </div>
+    
+    <!-- Progress Control -->
+    <div class="progress-container">
+      <span id="current-time">0:00</span>
+      <input type="range" id="progress-bar" class="progress-bar" value="0" step="0.1" oninput="seekAudio()" aria-label="Seek progress">
+      <span id="total-time">0:00</span>
+    </div>
+    
+    <audio id="bg-music" onended="nextSong()" ontimeupdate="updateProgress()" onloadedmetadata="setMetadata()">
+      <source src="" type="audio/mpeg">
+    </audio>
+  </div>
+
+  <!-- Link Card Hover Preview -->
+  <div id="link-preview" class="link-preview">
+    <img src="" id="preview-img" alt="Hover preview">
+  </div>
+
+  <!-- Footer & Status Controls -->
+  <footer id="bottom-right-controls" class="bottom-right-controls" style="display: none;">
+    <span class="quote-text" id="quote-text"></span>
+    <button id="zen-btn" class="zen-btn" onclick="toggleZenMode()" title="Toggle Zen Mode">
+      <svg id="eye-open" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+        <circle cx="12" cy="12" r="3"></circle>
+      </svg>
+      <svg id="eye-closed" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display: none;">
+        <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path>
+        <line x1="1" y1="1" x2="23" y2="23"></line>
+      </svg>
+    </button>
+  </footer>
+
+  <!-- Application Logic -->
+  <script src="script.js"></script>
 
-    <script>
-        function selectResponse(response) {
-            const responseScreen = document.getElementById('response-screen');
-            const fineVoice = document.getElementById('fine-voice');
-
-            // Fade out response screen
-            responseScreen.style.opacity = '0';
-            setTimeout(() => {
-                responseScreen.style.display = 'none';
-            }, 800);
-
-            // Play voice response
-            if (response === 'fine') {
-                // Pilih salah satu dari 3 suara "good" secara acak
-                const goodVoices = ['good-voice-1', 'good-voice-2', 'good-voice-3'];
-                const selectedGoodVoiceId = goodVoices[Math.floor(Math.random() * goodVoices.length)];
-                const selectedGoodVoice = document.getElementById(selectedGoodVoiceId);
-
-                if (selectedGoodVoice) {
-                    selectedGoodVoice.currentTime = 0;
-                    selectedGoodVoice.play().catch(e => console.log(e));
-                }
-            } else if (response === 'bad') {
-                // Pilih salah satu dari 3 suara "bad" secara acak
-                const badVoices = ['bad-voice-1', 'bad-voice-2', 'bad-voice-3'];
-                const selectedBadVoiceId = badVoices[Math.floor(Math.random() * badVoices.length)];
-                const selectedBadVoice = document.getElementById(selectedBadVoiceId);
-
-                if (selectedBadVoice) {
-                    selectedBadVoice.currentTime = 0;
-                    selectedBadVoice.play().catch(e => console.log(e));
-                }
-            }
-
-            // Continue to Dashboard sequence
-            setTimeout(startDashboardSequence, 1200);
-        }
-
-        function triggerImpact() {
-            var impactSound = document.getElementById('impact-sound');
-            var flash = document.getElementById('flash-overlay');
-            var container = document.getElementById('main-container');
-
-            if (impactSound) {
-                impactSound.currentTime = 0;
-                impactSound.play().catch(e => console.log("Impact sound failed: ", e));
-            }
-
-            // Flash Effect
-            if (flash) {
-                flash.classList.add('active');
-                setTimeout(() => flash.classList.remove('active'), 500);
-            }
-
-            // Shake Effect
-            if (container) {
-                container.classList.add('impact-shake');
-                setTimeout(() => container.classList.remove('impact-shake'), 600);
-            }
-        }
-
-        function toggleZoom(src) {
-            var lightbox = document.getElementById('lightbox');
-            var lightboxImg = document.getElementById('lightbox-img');
-
-            if (typeof src === 'string') {
-                lightboxImg.src = src;
-                lightbox.classList.add('active');
-            } else {
-                lightbox.classList.remove('active');
-            }
-        }
-
-        // --- Playlist Database (Single Playlist) ---
-        const playlist = [
-            { title: "Late Night Drive", artist: "ADTurnUp", src: "music/latenightdrive.mp3", cover: "disk/latenightdrive.png" },
-            { title: "Midnight Club", artist: "ADTurnUp", src: "music/midnightclub.mp3", cover: "disk/midnightclub.png" },
-            { title: "9PM In LA", artist: "ADTurnUp", src: "music/9pmla.mp3", cover: "disk/9pmla.png" },
-            { title: "stargirl", artist: "ADTurnUp", src: "music/stargirl.mp3", cover: "disk/stargirl.png" }
-        ];
-
-        let currentSongIndex = Math.floor(Math.random() * playlist.length);
-
-        function loadSong(index) {
-            var audio = document.getElementById('bg-music');
-            var albumArt = document.getElementById('album-art');
-            var songTitleContainer = document.querySelector('.song-title');
-            var songTitleSpan = songTitleContainer.querySelector('span');
-
-            const title = playlist[index].title;
-
-            // Metadata Update
-            songTitleSpan.innerText = title;
-            document.querySelector('.song-artist').innerText = playlist[index].artist;
-            albumArt.src = playlist[index].cover;
-
-            // Reset Marquee
-            songTitleContainer.classList.remove('marquee');
-            songTitleSpan.innerHTML = title;
-
-            // Kita tunggu sejenak agar browser memproses perubahan teks sebelum dihitung lebarnya
-            setTimeout(() => {
-                const textWidth = songTitleSpan.offsetWidth;
-                const containerWidth = songTitleContainer.offsetWidth;
-
-                if (textWidth > containerWidth) {
-                    const pixelsPerSecond = 22; // Pelan (sesuai request)
-                    const overflow = textWidth - containerWidth;
-                    const scrollDuration = textWidth / pixelsPerSecond;
-
-                    // Karena scrolling berlangsung di persentase 15% - 75% (total 60% dari durasi)
-                    const totalDuration = scrollDuration / 0.6;
-
-                    // Simpan variabel jarak geser tepat di ujung teks (untuk stop di "slowed")
-                    songTitleSpan.style.setProperty('--scroll-distance', `-${overflow + 2}px`);
-                    songTitleContainer.style.setProperty('--marquee-duration', `${totalDuration}s`);
-                    songTitleContainer.classList.add('marquee');
-                }
-            }, 50);
-
-            var isPlaying = !audio.paused && audio.currentTime > 0;
-            audio.src = playlist[index].src;
-
-            if (isPlaying) {
-                audio.play();
-            }
-        }
-
-
-        function nextSong() {
-            currentSongIndex = (currentSongIndex + 1) % playlist.length;
-            loadSong(currentSongIndex);
-
-            var audio = document.getElementById('bg-music');
-            var isPlaying = document.getElementById('pause-icon').style.display === 'block';
-            if (isPlaying) audio.play();
-        }
-
-        function prevSong() {
-            currentSongIndex = (currentSongIndex - 1 + playlist.length) % playlist.length;
-            loadSong(currentSongIndex);
-
-            var audio = document.getElementById('bg-music');
-            var isPlaying = document.getElementById('pause-icon').style.display === 'block';
-            if (isPlaying) audio.play();
-        }
-
-        function enterSite() {
-            var entryScreen = document.getElementById('entry-screen');
-            var helloScreen = document.getElementById('hello-screen');
-            var npScreen = document.getElementById('now-playing-screen');
-            var container = document.getElementById('main-container');
-            var musicPlayer = document.getElementById('music-player');
-            var controls = document.getElementById('bottom-right-controls');
-
-            // Play Hello Voice
-            var helloVoice = document.getElementById('hello-voice');
-            if (helloVoice) {
-                helloVoice.currentTime = 0;
-                helloVoice.play().catch(e => console.log(e));
-            }
-
-            // Start Hello Sequence (No Impact Sound Effect as requested earlier)
-            entryScreen.style.opacity = '0';
-            setTimeout(() => entryScreen.style.display = 'none', 400);
-            
-            helloScreen.style.display = 'flex';
-            setTimeout(() => helloScreen.classList.add('visible'), 50);
-
-            // Set Data for Now Playing Scene
-            const currentSong = playlist[currentSongIndex];
-            document.getElementById('np-disc').src = currentSong.cover;
-
-            const npTitle = document.getElementById('np-title');
-            const npArtist = document.getElementById('np-artist');
-            npTitle.innerText = currentSong.title;
-            npArtist.innerText = currentSong.artist;
-
-            // Video akan diputar nanti saat dashboard muncul agar transisi tetap hitam
-            var video = document.querySelector('.bg-video');
-
-            // 1. Durasi Hello Screen (Singkat & Elegan)
-            setTimeout(function () {
-                helloScreen.classList.remove('visible');
-                helloScreen.classList.add('fade-out');
-                
-                // Play Ready Voice (Interaktif "How Are You Today?")
-                const readyVoice = document.getElementById('ready-voice-2');
-                
-                if (readyVoice) {
-                    readyVoice.currentTime = 0;
-                    readyVoice.play().catch(e => console.log("Voice failed to play: ", e));
-                }
-
-                // Tampilkan opsi jawaban (Interaktif)
-                setTimeout(() => {
-                    var responseScreen = document.getElementById('response-screen');
-                    responseScreen.style.display = 'flex';
-                    void responseScreen.offsetWidth;
-                    responseScreen.classList.add('visible');
-                }, 800);
-            }, 1100);
-        }
-
-        function startDashboardSequence() {
-            var npScreen = document.getElementById('now-playing-screen');
-            var container = document.getElementById('main-container');
-            var musicPlayer = document.getElementById('music-player');
-            var controls = document.getElementById('bottom-right-controls');
-            var helloScreen = document.getElementById('hello-screen');
-            var video = document.querySelector('.bg-video');
-
-            // 3. Play Now Playing Scene (Bar Filling)
-            npScreen.style.display = 'flex';
-            void npScreen.offsetWidth;
-            npScreen.classList.add('active');
-
-            // 4. Setelah 2.5 detik (Bar Penuh), Berhenti Sejenak Sebelum Pindah ke Scene "you're connected"
-            setTimeout(function () {
-                // Tahan sejenak bar yang sudah penuh agar terlihat tuntas (800ms)
-                setTimeout(function () {
-                    // Animasi Keluar untuk Scene Loading
-                    npScreen.classList.add('exit');
-
-                    setTimeout(function () {
-                        npScreen.style.display = 'none';
-
-                        var connectedScreen = document.getElementById('connected-screen');
-                        connectedScreen.style.display = 'flex';
-                        void connectedScreen.offsetWidth;
-                        connectedScreen.classList.add('visible');
-
-                        // PLAY DING SOUND SAAT TERHUBUNG
-                        var dingSound = document.getElementById('ding-sound');
-                        if (dingSound) dingSound.play().catch(e => console.log(e));
-
-                        // 5. Setelah 1.2 detik (Scene Connected Selesai), Pindah ke Scene "welcome!"
-                        setTimeout(function () {
-                            connectedScreen.style.opacity = '0';
-
-                            setTimeout(function () {
-                                connectedScreen.style.display = 'none';
-
-                                var welcomeScreen = document.getElementById('welcome-screen');
-                                welcomeScreen.style.display = 'flex';
-                                void welcomeScreen.offsetWidth;
-                                welcomeScreen.classList.add('visible');
-
-                                // Play Welcome Voice
-                                var welcomeVoice = document.getElementById('welcome-voice');
-                                if (welcomeVoice) {
-                                    welcomeVoice.currentTime = 0;
-                                    welcomeVoice.play().catch(e => console.log(e));
-                                }
-
-                                // 6. Akhirnya masuk Dashboard dari scene "welcome!"
-                                setTimeout(function () {
-                                    welcomeScreen.style.opacity = '0';
-
-                                    setTimeout(function () {
-                                        welcomeScreen.style.display = 'none';
-                                        helloScreen.style.display = 'none';
-
-                                // DASHBOARD LOADING
-                                container.style.display = 'flex';
-                                container.classList.add('loaded');
-                                
-                                // TRIGGER IMPACT EFFECT
-                                triggerImpact();
-
-                                // REVEAL & PLAY VIDEO SEKARANG
-                                if (video) {
-                                    video.style.opacity = '1';
-                                    video.play();
-                                }
-
-                                musicPlayer.style.display = 'flex';
-                                loadSong(currentSongIndex);
-
-                                controls.style.display = 'flex';
-                                controls.classList.add('visible');
-
-                                setTimeout(typeWriter, 1200);
-
-                                // MULAILAH MUSIK UTAMA
-                                var audio = document.getElementById('bg-music');
-                                if (audio) {
-                                    audio.play().catch(e => console.log("Auto-play ditahan"));
-                                    document.getElementById('play-icon').style.display = 'none';
-                                    document.getElementById('pause-icon').style.display = 'block';
-                                    document.getElementById('album-art').style.animationPlayState = 'running';
-                                }
-                            }, 600); // Waktu memudar scene welcome
-                                }, 1200); // Tahan scene welcome selama 1.2 detik
-                            }, 400); // Jeda transisi antar scene confirmation
-                        }, 1200); // Tahan scene connected selama 1.2 detik
-                    }, 800); // Waktu yang diberikan untuk animasi keluar npScreen (800ms sync dengan CSS)
-                }, 800); // Pause tambahan (800ms) setelah bar 100%
-            }, 2500); // 2.5 detik untuk loading bar
-        }
-
-
-        function togglePlay() {
-            var audio = document.getElementById('bg-music');
-            var playIcon = document.getElementById('play-icon');
-            var pauseIcon = document.getElementById('pause-icon');
-            var albumArt = document.getElementById('album-art');
-
-            if (!audio.src || audio.src === window.location.href) {
-                loadSong(currentSongIndex);
-            }
-
-            if (audio.paused) {
-                audio.play();
-                playIcon.style.display = 'none';
-                pauseIcon.style.display = 'block';
-                albumArt.style.animationPlayState = 'running';
-            } else {
-                audio.pause();
-                playIcon.style.display = 'block';
-                pauseIcon.style.display = 'none';
-                albumArt.style.animationPlayState = 'paused';
-            }
-        }
-
-        // --- Fitur Progress Bar Spotify Style ---
-        function updateProgress() {
-            var audio = document.getElementById('bg-music');
-            var progressBar = document.getElementById('progress-bar');
-            var currentTimeEl = document.getElementById('current-time');
-
-            if (audio.duration) {
-                var progress = (audio.currentTime / audio.duration) * 100;
-                progressBar.value = progress;
-                // Update fill warna bar progres
-                progressBar.style.setProperty('--progress', `${progress}%`);
-                currentTimeEl.innerText = formatTime(audio.currentTime);
-            }
-        }
-
-        function setMetadata() {
-            var audio = document.getElementById('bg-music');
-            var totalTimeEl = document.getElementById('total-time');
-            var progressBar = document.getElementById('progress-bar');
-            totalTimeEl.innerText = formatTime(audio.duration);
-            progressBar.value = 0;
-            progressBar.style.setProperty('--progress', `0%`);
-            document.getElementById('current-time').innerText = "0:00";
-        }
-
-        function seekAudio() {
-            var audio = document.getElementById('bg-music');
-            var progressBar = document.getElementById('progress-bar');
-            var percent = progressBar.value;
-            var seekTime = (percent / 100) * audio.duration;
-            audio.currentTime = seekTime;
-            // Update fill saat drag manual
-            progressBar.style.setProperty('--progress', `${percent}%`);
-        }
-
-        function formatTime(seconds) {
-            if (isNaN(seconds)) return "0:00";
-            var min = Math.floor(seconds / 60);
-            var sec = Math.floor(seconds % 60);
-            if (sec < 10) sec = '0' + sec;
-            return min + ':' + sec;
-        }
-
-        function toggleZenMode() {
-            var card = document.getElementById('main-container');
-            var musicPlayer = document.getElementById('music-player');
-            var eyeOpen = document.getElementById('eye-open');
-            var eyeClosed = document.getElementById('eye-closed');
-
-            if (card.classList.contains('hidden')) {
-                // Matikan Zen Mode (Kembali Normal)
-                card.classList.remove('hidden');
-                card.classList.add('loaded');
-                musicPlayer.classList.remove('zen');
-                eyeOpen.style.display = 'block';
-                eyeClosed.style.display = 'none';
-            } else {
-                // Aktifkan Zen Mode
-                card.classList.remove('loaded');
-                card.classList.add('hidden');
-                musicPlayer.classList.add('zen');
-                eyeOpen.style.display = 'none';
-                eyeClosed.style.display = 'block';
-            }
-        }
-
-        // --- Fitur Typewriter Quotes ---
-        const quotes = [
-            '"ingfokan mabar bareng"',
-            '"strxdale or tourvillone?"',
-            '"hey kamu! ya, kamu keren!"',
-            '"aku suka.... eskrim"',
-            '"when yh...."',
-            '"skill issue btw"'
-        ];
-
-        let quoteIndex = 0;
-        let charIndex = 0;
-        let isDeleting = false;
-
-        function typeWriter() {
-            const currentQuote = quotes[quoteIndex];
-            const quoteEl = document.getElementById('quote-text');
-            if (!quoteEl) return;
-
-            if (isDeleting) {
-                quoteEl.innerText = currentQuote.substring(0, charIndex - 1);
-                charIndex--;
-            } else {
-                quoteEl.innerText = currentQuote.substring(0, charIndex + 1);
-                charIndex++;
-            }
-
-            let typeSpeed = isDeleting ? 30 : 60; // Kecepatan ketikan natural
-
-            if (!isDeleting && charIndex === currentQuote.length) {
-                typeSpeed = 4000; // Pause selama 4 detik setelah selesai baca
-                isDeleting = true;
-            } else if (isDeleting && charIndex === 0) {
-                isDeleting = false;
-                quoteIndex = (quoteIndex + 1) % quotes.length;
-                typeSpeed = 500; // Jeda sejenak sebelum ngetik quote baru
-            }
-
-            setTimeout(typeWriter, typeSpeed);
-        }
-
-        // --- Fitur Swipe/Drag pada Foto Profil ---
-        const profileCard = document.getElementById('profile-card');
-        let cardStartX = 0;
-        let isCardDragging = false;
-
-        profileCard.addEventListener('mousedown', (e) => {
-            cardStartX = e.clientX;
-            isCardDragging = true;
-            // Prevent default drag agar gambar tidak terseret secara native
-            e.preventDefault();
-        });
-
-        profileCard.addEventListener('mouseup', (e) => {
-            if (!isCardDragging) return;
-            isCardDragging = false;
-            let cardEndX = e.clientX;
-            handleCardPhysics(cardStartX, cardEndX, e.target);
-        });
-
-        profileCard.addEventListener('touchstart', (e) => {
-            cardStartX = e.changedTouches[0].screenX;
-            isCardDragging = true;
-        });
-
-        profileCard.addEventListener('touchend', (e) => {
-            if (!isCardDragging) return;
-            isCardDragging = false;
-            let cardEndX = e.changedTouches[0].screenX;
-            handleCardPhysics(cardStartX, cardEndX, e.target);
-        });
-
-        function handleCardPhysics(start, end, targetElem) {
-            const swipeDistance = Math.abs(end - start);
-
-            // Jika digeser lebih dari 20px -> MUTER
-            if (swipeDistance > 20) {
-                profileCard.classList.toggle('flipped');
-            }
-            // Jika cuma ditekan singkat (klik biasa) -> BUKA LIGHTBOX
-            else if (targetElem.tagName === 'IMG') {
-                toggleZoom(targetElem.src);
-            }
-        }
-
-        // --- Fitur Foreshadow (Gambar Preview saat Link di-Hover) ---
-        const previewBox = document.getElementById('link-preview');
-        const previewImg = document.getElementById('preview-img');
-        const linksElems = document.querySelectorAll('.link-card');
-
-        linksElems.forEach(link => {
-            link.addEventListener('mouseenter', (e) => {
-                const previewSrc = link.getAttribute('data-preview');
-                // Hanya munculkan jika data-preview memiliki file diatur
-                if (previewSrc && previewSrc.trim() !== "") {
-                    previewImg.src = previewSrc;
-                    // INISIALISASI POSISI SEGERA agar kotak tidak terjebak di luar layar
-                    previewBox.style.left = (e.clientX + 15) + 'px';
-                    previewBox.style.top = (e.clientY + 15) + 'px';
-                    previewBox.classList.add('visible');
-                }
-            });
-
-            link.addEventListener('mousemove', (e) => {
-                if (previewBox.classList.contains('visible')) {
-                    // Geser kotak preview selalu 15px menghindari tumpukan kursor
-                    previewBox.style.left = (e.clientX + 15) + 'px';
-                    previewBox.style.top = (e.clientY + 15) + 'px';
-                }
-            });
-
-            link.addEventListener('mouseleave', () => {
-                previewBox.classList.remove('visible');
-                // Sembunyikan gambar sesaat setelah transisi memudar (200ms)
-                setTimeout(() => {
-                    if (!previewBox.classList.contains('visible')) {
-                        previewImg.src = '';
-                    }
-                }, 200);
-            });
-        });
-    </script>
 </body>
-
 </html>
