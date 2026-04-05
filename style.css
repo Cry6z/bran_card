@@ -47,8 +47,10 @@ body {
     z-index: -100;
     transform: translate(-50%, -50%);
     object-fit: cover;
-    opacity: 0; /* Tersembunyi saat loading */
-    transition: opacity 1.5s ease; /* Transisi memudar saat muncul */
+    opacity: 0;
+    /* Tersembunyi saat loading */
+    transition: opacity 1.5s ease;
+    /* Transisi memudar saat muncul */
 }
 
 body::before {
@@ -112,7 +114,7 @@ body::before {
 @keyframes fadeUp {
     to {
         opacity: 1;
-        transform: translateY(0);
+        transform: none;
     }
 }
 
@@ -229,7 +231,8 @@ body::before {
 
 .header-text {
     text-align: center;
-    margin-bottom: 2rem;
+    margin-bottom: 0.15rem;
+    /* Max compactness */
 }
 
 .name-wrapper {
@@ -253,7 +256,8 @@ body::before {
     font-weight: 400;
     line-height: 1.5;
     max-width: 280px;
-    margin: 0 auto 1.25rem auto;
+    margin: 0 auto 0.25rem auto;
+    /* Tight margin */
 }
 
 /* Profiles Tags */
@@ -575,7 +579,8 @@ body::before {
         flex-direction: column;
         max-width: 100%;
         padding: 2rem 1.5rem;
-        gap: 1rem;
+        gap: 0.5rem;
+        /* Very tight spacing */
     }
 
     .divider {
@@ -613,7 +618,8 @@ body::before {
     align-items: center;
     z-index: 2000;
     cursor: pointer;
-    background: #000; /* Solid black transition */
+    background: #000;
+    /* Solid black transition */
     backdrop-filter: blur(4px);
     -webkit-backdrop-filter: blur(4px);
     transition: opacity 0.3s ease;
@@ -647,25 +653,22 @@ body::before {
     z-index: 1000;
     display: flex;
     flex-direction: column;
-    gap: 0.75rem;
-    background: var(--card-bg);
-    border: 1px solid var(--card-border);
-    padding: 1rem 1.25rem;
-    border-radius: 24px;
+    gap: 0.8rem;
+    background: rgba(255, 255, 255, 0.05);
+    /* Lighter glass */
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    padding: 1.25rem 1.5rem;
+    border-radius: 28px;
     width: 90%;
-    max-width: 340px;
-    box-shadow: var(--shadow-lg);
-    backdrop-filter: var(--glass-blur);
-    -webkit-backdrop-filter: var(--glass-blur);
+    max-width: 360px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(25px);
+    -webkit-backdrop-filter: blur(25px);
     animation: fadeUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
     animation-delay: 0.8s;
     opacity: 0;
     will-change: transform, opacity;
-    /* --- Animasi Transisi Zen Mode --- */
-    transition: all 0.7s cubic-bezier(0.16, 1, 0.3, 1),
-        backdrop-filter 0.4s ease,
-        background 0.4s ease,
-        border-color 0.4s ease;
+    transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .player-controls,
@@ -736,7 +739,8 @@ body::before {
 .player-content {
     display: flex;
     align-items: center;
-    gap: 1rem;
+    gap: 1.25rem;
+    /* Increased gap */
     width: 100%;
 }
 
@@ -780,23 +784,24 @@ body::before {
 /* Make sure media queries properly reposition floating player for mobile */
 @media (max-width: 768px) {
     .music-player {
-        bottom: 1rem;
-        left: 50%;
-        transform: translateX(-50%);
-        width: 92%;
-        max-width: 400px;
-        padding: 0.75rem 1rem;
-        animation-name: fadeUpCenter;
+        bottom: 1.25rem;
+        left: 1rem;
+        transform: none;
+        width: calc(100% - 100px);
+        max-width: none;
+        padding: 1rem 1.25rem;
+        animation-name: fadeUp;
+        border-radius: 24px;
     }
 
     .music-player.zen {
-        bottom: 2rem;
-        left: 50%;
-        transform: translateX(-50%);
-        width: 100%;
-        justify-content: center;
-        align-items: center;
+        bottom: 1.5rem;
+        left: 1.5rem;
+        width: auto;
         padding: 0;
+        background: transparent;
+        border: none;
+        backdrop-filter: none;
     }
 
     .album-art-wrapper {
@@ -878,9 +883,10 @@ body::before {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: clip;
-    /* Ubah dari ellipsis agar tidak memotong saat animasi */
     position: relative;
     width: 100%;
+    padding-left: 1px;
+    /* Precision fix for clipping */
 }
 
 .song-title span {
@@ -1014,7 +1020,8 @@ body::before {
     font-weight: 300;
     color: #fff;
     letter-spacing: 0.4em;
-    text-indent: 0.4em; /* Menghilangkan efek 'pushed to the left' akibat letter-spacing */
+    text-indent: 0.4em;
+    /* Menghilangkan efek 'pushed to the left' akibat letter-spacing */
     opacity: 0;
     transform: scale(0.9);
     transition: all 1.2s cubic-bezier(0.22, 1, 0.36, 1);
@@ -1035,11 +1042,23 @@ body::before {
     bottom: 2rem;
     right: 2rem;
     z-index: 1000;
+    display: flex;
     align-items: center;
     gap: 1.25rem;
     opacity: 0;
     transform: translateY(20px);
     pointer-events: none;
+    transition: all 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.bottom-right-controls.zen {
+    bottom: 2.5rem;
+}
+
+.control-group {
+    display: flex;
+    flex-direction: row;
+    gap: 0.75rem;
 }
 
 .bottom-right-controls.visible {
@@ -1059,6 +1078,24 @@ body::before {
     text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
     font-style: italic;
     min-height: 1.2rem;
+    display: inline-block;
+}
+
+.quote-text.footer-quote {
+    display: inline-block;
+    /* Uses parent's display: flex align-items: center for perfect alignment */
+}
+
+.card-quote-container {
+    display: none;
+    margin-top: 1.5rem;
+    margin-bottom: 1.25rem;
+    width: 100%;
+}
+
+.card-quote-container .quote-text {
+    text-align: center;
+    max-width: none;
 }
 
 .quote-text::after {
@@ -1106,22 +1143,58 @@ body::before {
 /* Controls Mobile Responsiveness */
 @media (max-width: 768px) {
     .bottom-right-controls {
-        bottom: 8.5rem;
-        /* Posisi aman di atas music player */
-        right: 1.5rem;
+        bottom: 1.25rem;
+        right: 1.25rem;
         flex-direction: row;
-        /* Teks berada di KIRI tombol, terlihat jauh lebih natural */
         align-items: center;
-        gap: 0.75rem;
-        /* Jarak antara teks dan tombol di HP didekatkan sedikit */
+        gap: 0.6rem;
     }
 
-    .quote-text {
-        max-width: 200px;
-        /* Lebar teks disesuaikan */
-        font-size: 0.75rem;
+    .control-group {
+        flex-direction: column-reverse;
+        /* Stacked but slightly tighter */
+        gap: 0.6rem;
+    }
+
+    .quote-text.footer-quote.desktop-quote {
+        display: none !important;
+    }
+
+    /* Zen Mode Specific: Activate the independent mobile quote */
+    .bottom-right-controls.zen ~ .mobile-zen-quote {
+        display: block !important;
+        position: fixed;
+        top: 2.5rem;
+        right: 1.5rem;
+        max-width: 250px;
+        text-align: right;
+        font-size: 0.82rem;
+        line-height: 1.4;
+        z-index: 2100;
+        animation: fadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    .card-quote-container {
+        display: block;
+    }
+
+    .card-quote-container .quote-text {
+        text-align: center;
+    }
+
+    .zen-btn {
+        width: 44px;
+        height: 44px;
+        background: rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .zen-btn svg {
+        width: 20px;
+        height: 20px;
     }
 }
+
 
 /* --- Now Playing Cinematic Scene --- */
 #now-playing-screen {
@@ -1131,7 +1204,8 @@ body::before {
     right: 0;
     bottom: 0;
     z-index: 2500;
-    background: #000; /* Solid black transition */
+    background: #000;
+    /* Solid black transition */
     backdrop-filter: blur(40px);
     display: flex;
     justify-content: center;
@@ -1323,7 +1397,8 @@ body::before {
     right: 0;
     bottom: 0;
     z-index: 2600;
-    background: #000; /* Solid black transition */
+    background: #000;
+    /* Solid black transition */
     backdrop-filter: blur(50px);
     display: flex;
     justify-content: center;
@@ -1356,7 +1431,8 @@ body::before {
     font-weight: 800;
     color: #fff;
     letter-spacing: 0.2em;
-    text-indent: 0.2em; /* Balancing center */
+    text-indent: 0.2em;
+    /* Balancing center */
     text-shadow: 0 0 30px rgba(255, 255, 255, 0.5);
     margin: 0;
 }
@@ -1383,6 +1459,7 @@ body::before {
         transform: scale(0) rotate(-45deg);
         opacity: 0;
     }
+
     to {
         transform: scale(1) rotate(0);
         opacity: 1;
@@ -1397,7 +1474,8 @@ body::before {
     right: 0;
     bottom: 0;
     z-index: 2650;
-    background: #000; /* Solid black transition */
+    background: #000;
+    /* Solid black transition */
     backdrop-filter: blur(60px);
     display: flex;
     justify-content: center;
@@ -1417,7 +1495,8 @@ body::before {
     font-weight: 400;
     color: #fff;
     letter-spacing: 0.3em;
-    text-indent: 0.3em; /* Balancing center */
+    text-indent: 0.3em;
+    /* Balancing center */
     opacity: 0;
     transform: translateY(20px);
     transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
@@ -1520,8 +1599,13 @@ body::before {
 }
 
 @keyframes flashEffect {
-    0% { opacity: 0.8; }
-    100% { opacity: 0; }
+    0% {
+        opacity: 0.8;
+    }
+
+    100% {
+        opacity: 0;
+    }
 }
 
 .impact-shake {
@@ -1532,10 +1616,27 @@ body::before {
 }
 
 @keyframes shake {
-    10%, 90% { transform: translate3d(-1px, 1px, 0); }
-    20%, 80% { transform: translate3d(2px, -2px, 0); }
-    30%, 50%, 70% { transform: translate3d(-4px, 4px, 0); }
-    40%, 60% { transform: translate3d(4px, -4px, 0); }
+
+    10%,
+    90% {
+        transform: translate3d(-1px, 1px, 0);
+    }
+
+    20%,
+    80% {
+        transform: translate3d(2px, -2px, 0);
+    }
+
+    30%,
+    50%,
+    70% {
+        transform: translate3d(-4px, 4px, 0);
+    }
+
+    40%,
+    60% {
+        transform: translate3d(4px, -4px, 0);
+    }
 }
 
 /* --- Response Selection Scene --- */
@@ -1579,7 +1680,8 @@ body::before {
 
 #response-screen.visible .res-question {
     animation: fadeInUpGeneric 1.2s forwards;
-    opacity: 0.5; /* Subtly elegant */
+    opacity: 0.5;
+    /* Subtly elegant */
 }
 
 .res-options {
@@ -1634,4 +1736,355 @@ body::before {
     opacity: 0.5;
 }
 
-
+/* --- Mini Games Overlay --- */
+.games-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    z-index: 3000;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    transition: opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.games-overlay.visible {
+    display: flex;
+    opacity: 1;
+}
+
+.games-container {
+    width: 90%;
+    max-width: 500px;
+    background: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(24px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 32px;
+    padding: 2.5rem;
+    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5);
+    transform: scale(0.9) translateY(20px);
+    transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    position: relative;
+    color: var(--text-primary);
+}
+
+.games-overlay.visible .games-container {
+    transform: scale(1) translateY(0);
+}
+
+.games-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+}
+
+.games-header h2 {
+    font-size: 1.5rem;
+    letter-spacing: 0.1em;
+    font-weight: 700;
+}
+
+.close-games {
+    background: none;
+    border: none;
+    color: var(--text-secondary);
+    font-size: 2rem;
+    cursor: pointer;
+    transition: color 0.3s;
+}
+
+.close-games:hover {
+    color: #fff;
+}
+
+.games-tabs {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 2rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding-bottom: 0.5rem;
+}
+
+.tab-btn {
+    background: none;
+    border: none;
+    color: var(--text-secondary);
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    font-size: 0.85rem;
+    transition: all 0.3s;
+    border-radius: 12px;
+    letter-spacing: 0.05em;
+}
+
+.tab-btn.active {
+    color: #fff;
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.game-viewport {
+    min-height: 380px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.game-content {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    animation: fadeInGame 0.4s ease forwards;
+}
+
+.game-content.active {
+    display: flex;
+}
+
+@keyframes fadeInGame {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.game-status {
+    margin: 1rem 0;
+    font-size: 0.9rem;
+    letter-spacing: 0.05em;
+    color: var(--text-secondary);
+}
+
+.game-controls {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1rem;
+    align-items: center;
+}
+
+/* Custom Dropdown Styling */
+.custom-select {
+    position: relative;
+    width: 180px;
+    user-select: none;
+}
+
+.select-trigger {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #fff;
+    padding: 0.6rem 1.25rem;
+    border-radius: 14px;
+    cursor: pointer;
+    font-size: 0.85rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.select-trigger:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.2);
+}
+
+.select-trigger svg {
+    width: 14px;
+    height: 14px;
+    opacity: 0.5;
+    transition: transform 0.3s ease;
+}
+
+.custom-select.active .select-trigger svg {
+    transform: rotate(180deg);
+}
+
+.select-options {
+    position: absolute;
+    top: calc(100% + 8px);
+    left: 0;
+    width: 100%;
+    background: rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(25px);
+    -webkit-backdrop-filter: blur(25px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+    overflow: hidden;
+    z-index: 10;
+    opacity: 0;
+    transform: translateY(10px) scale(0.95);
+    pointer-events: none;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
+}
+
+.custom-select.active .select-options {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    pointer-events: all;
+}
+
+.select-option {
+    padding: 0.75rem 1.25rem;
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.select-option:hover {
+    background: rgba(255, 255, 255, 0.08);
+    color: #fff;
+    padding-left: 1.5rem;
+}
+
+.select-option:not(:last-child) {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+}
+
+.game-btn-small {
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    color: #fff;
+    padding: 0.6rem 1.25rem;
+    border-radius: 14px;
+    cursor: pointer;
+    font-size: 0.85rem;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.game-btn-small:hover {
+    background: rgba(255, 255, 255, 0.15);
+    transform: translateY(-1px);
+}
+
+.game-btn {
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    color: #fff;
+    padding: 0.8rem 2rem;
+    border-radius: 12px;
+    cursor: pointer;
+    font-size: 0.85rem;
+    letter-spacing: 0.1em;
+    transition: all 0.3s;
+}
+
+.game-btn:hover {
+    background: rgba(255, 255, 255, 0.15);
+    border-color: rgba(255, 255, 255, 0.3);
+    transform: translateY(-2px);
+}
+
+/* Tic Tac Toe Grid */
+.ttt-board {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    width: 250px;
+    margin: 0 auto;
+}
+
+.ttt-cell {
+    width: 75px;
+    height: 75px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 2rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.ttt-cell:hover:empty {
+    background: rgba(255, 255, 255, 0.08);
+    transform: scale(1.05);
+}
+
+.ttt-cell.x-marker::before {
+    content: 'X';
+    color: #fff;
+}
+
+.ttt-cell.o-marker::before {
+    content: 'O';
+    color: rgba(255, 255, 255, 0.6);
+}
+
+/* Snake Canvas */
+#snake-canvas {
+    background: rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+    image-rendering: pixelated;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+/* Chess Board */
+.chess-board {
+    display: grid;
+    grid-template-columns: repeat(8, 1fr);
+    width: 320px;
+    height: 320px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+}
+
+.chess-square {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.8rem;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.chess-square.light {
+    background: rgba(255, 255, 255, 0.12);
+}
+
+.chess-square.dark {
+    background: rgba(0, 0, 0, 0.25);
+}
+
+.chess-square.selected {
+    background: rgba(255, 255, 255, 0.35) !important;
+}
+
+.chess-square.valid-move::after {
+    content: '';
+    width: 10px;
+    height: 10px;
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+}
+
+.chess-piece {
+    user-select: none;
+    transition: transform 0.2s;
+}
+
+.chess-square:hover .chess-piece {
+    transform: scale(1.1);
+}

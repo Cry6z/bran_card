@@ -5,20 +5,21 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>yoo!</title>
-  
+
   <!-- SEO & Social Meta -->
   <meta name="description" content="Gibran's personal digital bio and portfolio.">
   <meta name="author" content="Gibran">
   <meta property="og:title" content="Bran | Digital Bio">
   <meta property="og:description" content="Personal space of a lost guy in the digital world.">
-  <meta property="og:image" content="agib.png">
-  
+  <meta property="og:image" content="pfp.png">
+
   <!-- Fonts & Icons -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Anonymous+Pro:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Anonymous+Pro:ital,wght@0,400;0,700;1,400;1,700&display=swap"
+    rel="stylesheet">
   <link rel="icon" type="image/png" href="favicon.png">
-  
+
   <!-- Content Styles -->
   <link rel="stylesheet" href="style.css">
 </head>
@@ -44,7 +45,7 @@
       <h2 class="res-question">how are you today?</h2>
       <div class="res-options">
         <button class="res-btn" onclick="selectResponse('fine')" aria-label="I am doing good">very good!</button>
-        <button class="res-btn" onclick="selectResponse('bad')" aria-label="I am doing bad">very bad...</button>
+        <button class="res-btn" onclick="selectResponse('bad')" aria-label="I am doing bad">very bad..</button>
       </div>
     </div>
   </section>
@@ -71,7 +72,8 @@
     <div class="nc-content">
       <h1 class="nc-text">you're connected</h1>
       <div class="nc-checkmark">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"
+          stroke-linejoin="round">
           <polyline points="20 6 9 17 4 12"></polyline>
         </svg>
       </div>
@@ -89,22 +91,22 @@
 
   <!-- Main Dashboard -->
   <main class="container" id="main-container" style="display: none;">
-    
+
     <!-- Left Side: Profile Info -->
     <header class="profile-column">
       <div class="profile-wrapper">
         <div class="pulse-ring"></div>
-        
+
         <!-- 3D Flip Profile -->
         <div class="profile-flip-container" id="profile-card">
           <div class="profile-flip-inner">
             <!-- Front Face -->
             <div class="profile-flip-front">
-              <img src="agib.png" alt="Gibran - Front Profile" class="profile-img">
+              <img src="pfp.png" alt="Gibran - Front Profile" class="profile-img">
             </div>
             <!-- Back Face -->
             <div class="profile-flip-back">
-              <img src="agib2.png" alt="Gibran - Alternate Profile" class="profile-img">
+              <img src="pfp2.png" alt="Gibran - Alternate Profile" class="profile-img">
             </div>
           </div>
         </div>
@@ -122,6 +124,9 @@
           <span class="tag"># skill_issue</span>
           <span class="tag"># noob</span>
         </div>
+        <div class="card-quote-container">
+          <span class="quote-text"></span>
+        </div>
       </div>
     </header>
 
@@ -130,18 +135,22 @@
     <!-- Right Side: Links Navigation -->
     <nav class="links-column">
       <div class="links-container">
-        
-        <a href="http://strxdale-catalog.vercel.app/" class="link-card" target="_blank" data-preview="preview/catalog.png">
+
+        <a href="http://strxdale-catalog.vercel.app/" class="link-card" target="_blank"
+          data-preview="preview/catalog.png">
           <div class="link-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+              stroke-linejoin="round">
               <circle cx="12" cy="12" r="10"></circle>
               <line x1="2" y1="12" x2="22" y2="12"></line>
-              <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+              <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z">
+              </path>
             </svg>
           </div>
           <span class="link-text">Catalog</span>
           <div class="link-arrow">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+              stroke-linejoin="round">
               <line x1="5" y1="12" x2="19" y2="12"></line>
               <polyline points="12 5 19 12 12 19"></polyline>
             </svg>
@@ -150,22 +159,28 @@
 
         <a href="https://github.com/Cry6z" class="link-card" target="_blank" data-preview="preview/github.png">
           <div class="link-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+              stroke-linejoin="round">
+              <path
+                d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22">
+              </path>
             </svg>
           </div>
           <span class="link-text">GitHub</span>
           <div class="link-arrow">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+              stroke-linejoin="round">
               <line x1="5" y1="12" x2="19" y2="12"></line>
               <polyline points="12 5 19 12 12 19"></polyline>
             </svg>
           </div>
         </a>
 
-        <a href="https://www.instagram.com/verlorenbran" class="link-card" target="_blank" data-preview="preview/ig.png">
+        <a href="https://www.instagram.com/verlorenbran" class="link-card" target="_blank"
+          data-preview="preview/ig.png">
           <div class="link-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+              stroke-linejoin="round">
               <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
               <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
               <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
@@ -173,48 +188,57 @@
           </div>
           <span class="link-text">Instagram</span>
           <div class="link-arrow">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+              stroke-linejoin="round">
               <line x1="5" y1="12" x2="19" y2="12"></line>
               <polyline points="12 5 19 12 12 19"></polyline>
             </svg>
           </div>
         </a>
 
-        <a href="https://steamcommunity.com/profiles/76561199165908964/" class="link-card" target="_blank" data-preview="preview/steam.png">
+        <a href="https://steamcommunity.com/profiles/76561199165908964/" class="link-card" target="_blank"
+          data-preview="preview/steam.png">
           <div class="link-icon">
             <img src="icons/steam.png" alt="Steam" style="width: 22px; height: 22px; filter: brightness(0) invert(1);">
           </div>
           <span class="link-text">Steam</span>
           <div class="link-arrow">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+              stroke-linejoin="round">
               <line x1="5" y1="12" x2="19" y2="12"></line>
               <polyline points="12 5 19 12 12 19"></polyline>
             </svg>
           </div>
         </a>
 
-        <a href="https://open.spotify.com/user/31t4pdanvx27zaiw35tu2bmu5kqa" class="link-card" target="_blank" data-preview="preview/spotify.png">
+        <a href="https://open.spotify.com/user/31t4pdanvx27zaiw35tu2bmu5kqa" class="link-card" target="_blank"
+          data-preview="preview/spotify.png">
           <div class="link-icon">
             <svg viewBox="0 0 24 24" fill="currentColor">
-              <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.372 12-12S18.627 0 12 0zm5.502 17.31c-.218.358-.684.47-1.042.252-2.875-1.758-6.495-2.156-10.757-1.18-.41.093-.82-.16-.914-.572-.093-.41.16-.82.572-.914 4.656-1.066 8.653-.615 11.89 1.363.358.218.47.684.25 1.05zm1.468-3.26c-.274.444-.858.583-1.302.308-3.29-2.023-8.303-2.61-12.185-1.433-.497.15-1.025-.13-1.176-.628-.15-.497.13-1.025.628-1.176 4.436-1.347 9.965-.694 13.725 1.62.443.273.582.853.31 1.31zm.128-3.395c-3.947-2.344-10.463-2.56-14.253-1.408-.606.184-1.25-.164-1.434-.77-.184-.606.164-1.25.77-1.434 4.34-1.318 11.536-1.062 16.082 1.637.544.323.724 1.03.4 1.575-.323.544-1.03.723-1.565.4z" />
+              <path
+                d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.372 12-12S18.627 0 12 0zm5.502 17.31c-.218.358-.684.47-1.042.252-2.875-1.758-6.495-2.156-10.757-1.18-.41.093-.82-.16-.914-.572-.093-.41.16-.82.572-.914 4.656-1.066 8.653-.615 11.89 1.363.358.218.47.684.25 1.05zm1.468-3.26c-.274.444-.858.583-1.302.308-3.29-2.023-8.303-2.61-12.185-1.433-.497.15-1.025-.13-1.176-.628-.15-.497.13-1.025.628-1.176 4.436-1.347 9.965-.694 13.725 1.62.443.273.582.853.31 1.31zm.128-3.395c-3.947-2.344-10.463-2.56-14.253-1.408-.606.184-1.25-.164-1.434-.77-.184-.606.164-1.25.77-1.434 4.34-1.318 11.536-1.062 16.082 1.637.544.323.724 1.03.4 1.575-.323.544-1.03.723-1.565.4z" />
             </svg>
           </div>
           <span class="link-text">Spotify</span>
           <div class="link-arrow">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+              stroke-linejoin="round">
               <line x1="5" y1="12" x2="19" y2="12"></line>
               <polyline points="12 5 19 12 12 19"></polyline>
             </svg>
           </div>
         </a>
 
-        <a href="https://www.roblox.com/users/634367340/profile" class="link-card" target="_blank" data-preview="preview/roblox.png">
+        <a href="https://www.roblox.com/users/209995570/profile" class="link-card" target="_blank"
+          data-preview="preview/roblox.png">
           <div class="link-icon">
-            <img src="icons/roblox.png" alt="Roblox" style="width: 22px; height: 22px; filter: brightness(0) invert(1);">
+            <img src="icons/roblox.png" alt="Roblox"
+              style="width: 20px; height: 20px; filter: brightness(0) invert(1);">
           </div>
           <span class="link-text">Roblox</span>
           <div class="link-arrow">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+              stroke-linejoin="round">
               <line x1="5" y1="12" x2="19" y2="12"></line>
               <polyline points="12 5 19 12 12 19"></polyline>
             </svg>
@@ -231,7 +255,7 @@
     <audio id="hello-voice" src="voice/Hello.mp3" preload="auto"></audio>
     <audio id="ready-voice-2" src="voice/howareyoutoday.mp3" preload="auto"></audio>
     <audio id="welcome-voice" src="voice/welcome!.mp3" preload="auto"></audio>
-    
+
     <!-- Response Audio Groups -->
     <div class="good-voices">
       <audio id="good-voice-1" src="good/good1.mp3" preload="auto"></audio>
@@ -282,14 +306,15 @@
         </button>
       </div>
     </div>
-    
+
     <!-- Progress Control -->
     <div class="progress-container">
       <span id="current-time">0:00</span>
-      <input type="range" id="progress-bar" class="progress-bar" value="0" step="0.1" oninput="seekAudio()" aria-label="Seek progress">
+      <input type="range" id="progress-bar" class="progress-bar" value="0" step="0.1" oninput="seekAudio()"
+        aria-label="Seek progress">
       <span id="total-time">0:00</span>
     </div>
-    
+
     <audio id="bg-music" onended="nextSong()" ontimeupdate="updateProgress()" onloadedmetadata="setMetadata()">
       <source src="" type="audio/mpeg">
     </audio>
@@ -302,21 +327,126 @@
 
   <!-- Footer & Status Controls -->
   <footer id="bottom-right-controls" class="bottom-right-controls" style="display: none;">
-    <span class="quote-text" id="quote-text"></span>
-    <button id="zen-btn" class="zen-btn" onclick="toggleZenMode()" title="Toggle Zen Mode">
-      <svg id="eye-open" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
-        <circle cx="12" cy="12" r="3"></circle>
-      </svg>
-      <svg id="eye-closed" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display: none;">
-        <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path>
-        <line x1="1" y1="1" x2="23" y2="23"></line>
-      </svg>
-    </button>
+    <!-- Desktop quote element (aligned via flexbox) -->
+    <span class="quote-text footer-quote desktop-quote"></span>
+    <div class="control-group">
+      <button id="games-btn" class="zen-btn" onclick="openGames()" title="Mini Games">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+          stroke-linejoin="round">
+          <rect x="2" y="6" width="20" height="12" rx="2"></rect>
+          <path d="M6 12h4"></path>
+          <path d="M8 10v4"></path>
+          <circle cx="15" cy="11" r="1"></circle>
+          <circle cx="18" cy="13" r="1"></circle>
+        </svg>
+      </button>
+      <button id="zen-btn" class="zen-btn" onclick="toggleZenMode()" title="Toggle Zen Mode">
+        <svg id="eye-open" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+          stroke-linejoin="round">
+          <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+          <circle cx="12" cy="12" r="3"></circle>
+        </svg>
+        <svg id="eye-closed" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+          stroke-linecap="round" stroke-linejoin="round" style="display: none;">
+          <path
+            d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24">
+          </path>
+          <line x1="1" y1="1" x2="23" y2="23"></line>
+        </svg>
+      </button>
+    </div>
   </footer>
+
+  <!-- Dedicated quote element for Mobile Zen Mode (bypasses footer animation bounds) -->
+  <span class="quote-text footer-quote mobile-zen-quote" style="display: none;"></span>
+
+  <!-- Mini Games Overlay -->
+  <div id="games-overlay" class="games-overlay" style="display: none;">
+    <div class="games-container">
+      <header class="games-header">
+        <h2>Mini Games</h2>
+        <button class="close-games" onclick="closeGames()">&times;</button>
+      </header>
+
+      <nav class="games-tabs">
+        <button class="tab-btn active" onclick="switchGame('tictactoe')">Tic Tac Toe</button>
+        <button class="tab-btn" onclick="switchGame('snake')">Snake</button>
+        <button class="tab-btn" onclick="switchGame('chess')">Chess</button>
+      </nav>
+
+      <div class="game-viewport">
+        <!-- Tic Tac Toe -->
+        <div id="game-tictactoe" class="game-content active">
+          <div class="ttt-board" id="ttt-board">
+            <div class="ttt-cell" data-index="0"></div>
+            <div class="ttt-cell" data-index="1"></div>
+            <div class="ttt-cell" data-index="2"></div>
+            <div class="ttt-cell" data-index="3"></div>
+            <div class="ttt-cell" data-index="4"></div>
+            <div class="ttt-cell" data-index="5"></div>
+            <div class="ttt-cell" data-index="6"></div>
+            <div class="ttt-cell" data-index="7"></div>
+            <div class="ttt-cell" data-index="8"></div>
+          </div>
+          <div class="game-controls">
+            <div class="custom-select" id="ttt-difficulty-container">
+              <div class="select-trigger" onclick="toggleTTTDropdown()">
+                <span id="ttt-difficulty-label">Easy</span>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                  stroke-linejoin="round">
+                  <polyline points="6 9 12 15 18 9"></polyline>
+                </svg>
+              </div>
+              <div class="select-options" id="ttt-difficulty-options">
+                <div class="select-option" onclick="changeTTTDifficulty('easy', 'Easy')">Easy</div>
+                <div class="select-option" onclick="changeTTTDifficulty('medium', 'Medium')">Medium</div>
+                <div class="select-option" onclick="changeTTTDifficulty('hard', 'Hard (Impossible)')">Hard (Impossible)
+                </div>
+              </div>
+            </div>
+            <button class="game-btn-small" onclick="resetTTT()">Restart</button>
+          </div>
+          <div class="game-status" id="ttt-status">Your turn (X)</div>
+        </div>
+
+        <!-- Snake -->
+        <div id="game-snake" class="game-content">
+          <canvas id="snake-canvas" width="300" height="300"></canvas>
+          <div class="game-status" id="snake-score">Score: 0</div>
+          <button class="game-btn" onclick="startSnake()">Start Game</button>
+        </div>
+
+        <!-- Chess -->
+        <div id="game-chess" class="game-content">
+          <div class="chess-board" id="chess-board">
+            <!-- Board will be generated by JS -->
+          </div>
+          <div class="game-controls">
+            <div class="custom-select" id="chess-difficulty-container">
+              <div class="select-trigger" onclick="toggleChessDropdown()">
+                <span id="chess-difficulty-label">Medium</span>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                  stroke-linejoin="round">
+                  <polyline points="6 9 12 15 18 9"></polyline>
+                </svg>
+              </div>
+              <div class="select-options" id="chess-difficulty-options">
+                <div class="select-option" onclick="changeChessDifficulty('easy', 'Easy')">Easy</div>
+                <div class="select-option" onclick="changeChessDifficulty('medium', 'Medium')">Medium</div>
+                <div class="select-option" onclick="changeChessDifficulty('hard', 'Hard')">Hard</div>
+              </div>
+            </div>
+            <button class="game-btn-small" onclick="resetChess()">Restart</button>
+          </div>
+          <div class="game-status" id="chess-status">White's Turn</div>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <!-- Application Logic -->
   <script src="script.js"></script>
 
 </body>
+
 </html>
