@@ -612,7 +612,7 @@ function resetTTT() {
     tttBoard = ['', '', '', '', '', '', '', '', ''];
     tttActive = true;
     tttPlayer = 'X';
-    document.getElementById('ttt-status').innerText = "Your turn (X)";
+    document.getElementById('ttt-status').innerText = "Your Turn";
     const cells = document.querySelectorAll('.ttt-cell');
     cells.forEach(cell => {
         cell.className = 'ttt-cell';
@@ -643,7 +643,7 @@ function makeMove(index, player) {
         tttActive = false;
     } else {
         tttPlayer = (player === 'X' ? 'O' : 'X');
-        document.getElementById('ttt-status').innerText = (tttPlayer === 'X' ? "Your turn (X)" : "AI's turn (O)");
+        document.getElementById('ttt-status').innerText = (tttPlayer === 'X' ? "Your Turn" : "AI Turn");
     }
 }
 
@@ -904,7 +904,7 @@ function renderChess() {
     const boardEl = document.getElementById('chess-board');
     if (!boardEl) return;
     boardEl.innerHTML = '';
-    document.getElementById('chess-status').innerText = (chessTurn === 'white' ? "Your Turn (White)" : "AI's Turn (Black)");
+    document.getElementById('chess-status').innerText = (chessTurn === 'white' ? "Your Turn" : "AI Turn");
 
     const validMoves = selectedSquare ? getLegalMoves(selectedSquare.r, selectedSquare.c) : [];
 
@@ -959,7 +959,7 @@ function executeMove(fromR, fromC, toR, toC) {
     chessBoard[fromR][fromC] = '';
 
     if (captured && captured[1] === 'k') {
-        document.getElementById('chess-status').innerText = (chessTurn === 'white' ? "White Wins!" : "Black Wins!");
+        document.getElementById('chess-status').innerText = (chessTurn === 'white' ? "You Win!" : "AI Wins!");
         chessGameActive = false;
     }
 
@@ -1020,38 +1020,95 @@ function getLegalMoves(r, c) {
 
 function chessAI() {
     if (!chessGameActive || chessTurn !== 'black') return;
+    
     let allMoves = getAllMoves('black', chessBoard);
     if (allMoves.length === 0) return;
-    let bestMove;
+    
+    let bestMove = null;
+    
     if (chessDifficulty === 'easy') {
-        bestMove = allMoves[Math.floor(Math.random() * allMoves.length)];
+        // Easy: Random move, but try to capture if possible
+        let captures = allMoves.filter(m => chessBoard[m.to.r][m.to.c] !== '');
+        if (captures.length > 0 && Math.random() > 0.5) {
+            bestMove = captures[Math.floor(Math.random() * captures.length)];
+        } else {
+            bestMove = allMoves[Math.floor(Math.random() * allMoves.length)];
+        }
     } else if (chessDifficulty === 'medium') {
-        allMoves.sort((a, b) => {
-            const vA = chessBoard[a.to.r][a.to.c] ? pieceValues[chessBoard[a.to.r][a.to.c][1]] : 0;
-            const vB = chessBoard[b.to.r][b.to.c] ? pieceValues[chessBoard[b.to.r][b.to.c][1]] : 0;
-            return vB - vA;
-        });
-        bestMove = allMoves[0];
-    } else {
+        // Medium: Minimax depth 2
         let bestScore = -Infinity;
         for (let m of allMoves) {
-            let b = [m.from.r, m.from.c, m.to.r, m.to.c]; // simplified eval
             let tempBoard = copyBoard(chessBoard);
             applyMove(tempBoard, m);
-            let score = evaluateBoard(tempBoard);
-            let wMoves = getAllMoves('white', tempBoard);
-            if (wMoves.length > 0) {
-                let bestW = -Infinity;
-                for (let wm of wMoves) {
-                    let val = tempBoard[wm.to.r][wm.to.c] ? pieceValues[tempBoard[wm.to.r][wm.to.c][1]] : 0;
-                    if (val > bestW) bestW = val;
-                }
-                score -= bestW;
+            let score = minimax(tempBoard, 1, -Infinity, Infinity, false);
+            if (score > bestScore) {
+                bestScore = score;
+                bestMove = m;
             }
-            if (score > bestScore) { bestScore = score; bestMove = m; }
+        }
+    } else {
+        // Hard: Minimax depth 3 with alpha-beta pruning
+        let bestScore = -Infinity;
+        // Sort moves to improve alpha-beta pruning efficiency
+        allMoves.sort((a, b) => {
+            let valA = chessBoard[a.to.r][a.to.c] ? pieceValues[chessBoard[a.to.r][a.to.c][1]] : 0;
+            let valB = chessBoard[b.to.r][b.to.c] ? pieceValues[chessBoard[b.to.r][b.to.c][1]] : 0;
+            return valB - valA;
+        });
+
+        for (let m of allMoves) {
+            let tempBoard = copyBoard(chessBoard);
+            applyMove(tempBoard, m);
+            let score = minimax(tempBoard, 2, -Infinity, Infinity, false);
+            if (score > bestScore) {
+                bestScore = score;
+                bestMove = m;
+            }
         }
     }
-    if (bestMove) { executeMove(bestMove.from.r, bestMove.from.c, bestMove.to.r, bestMove.to.c); renderChess(); }
+    
+    // Fallback if no move found (shouldn't happen unless checkmate)
+    if (!bestMove && allMoves.length > 0) bestMove = allMoves[0];
+
+    if (bestMove) { 
+        executeMove(bestMove.from.r, bestMove.from.c, bestMove.to.r, bestMove.to.c); 
+        renderChess(); 
+    }
+}
+
+function minimax(board, depth, alpha, beta, isMaximizing) {
+    if (depth === 0) return evaluateBoard(board);
+
+    let moves = getAllMoves(isMaximizing ? 'black' : 'white', board);
+    if (moves.length === 0) {
+        // Simple checkmate/stalemate evaluation
+        // Assuming if no moves and in check -> mate
+        return isMaximizing ? -9000 : 9000; 
+    }
+
+    if (isMaximizing) {
+        let maxEval = -Infinity;
+        for (let m of moves) {
+            let tempBoard = copyBoard(board);
+            applyMove(tempBoard, m);
+            let ev = minimax(tempBoard, depth - 1, alpha, beta, false);
+            maxEval = Math.max(maxEval, ev);
+            alpha = Math.max(alpha, ev);
+            if (beta <= alpha) break;
+        }
+        return maxEval;
+    } else {
+        let minEval = Infinity;
+        for (let m of moves) {
+            let tempBoard = copyBoard(board);
+            applyMove(tempBoard, m);
+            let ev = minimax(tempBoard, depth - 1, alpha, beta, true);
+            minEval = Math.min(minEval, ev);
+            beta = Math.min(beta, ev);
+            if (beta <= alpha) break;
+        }
+        return minEval;
+    }
 }
 
 function getAllMoves(color, b) {
@@ -1066,11 +1123,67 @@ function getAllMoves(color, b) {
 
 function copyBoard(b) { return b.map(row => [...row]); }
 function applyMove(b, m) { b[m.to.r][m.to.c] = b[m.from.r][m.from.c]; b[m.from.r][m.from.c] = ''; }
+
+// Positional bonuses (Piece-Square Tables)
+// Simplified to encourage center control and pieces development
+const pawnEvalBlack = [
+    [0,  0,  0,  0,  0,  0,  0,  0],
+    [5, 10, 10,-20,-20, 10, 10,  5],
+    [5, -5,-10,  0,  0,-10, -5,  5],
+    [0,  0,  0, 20, 20,  0,  0,  0],
+    [5,  5, 10, 25, 25, 10,  5,  5],
+    [10, 10, 20, 30, 30, 20, 10, 10],
+    [50, 50, 50, 50, 50, 50, 50, 50],
+    [0,  0,  0,  0,  0,  0,  0,  0]
+];
+
+const knightEval = [
+    [-50,-40,-30,-30,-30,-30,-40,-50],
+    [-40,-20,  0,  0,  0,  0,-20,-40],
+    [-30,  0, 10, 15, 15, 10,  0,-30],
+    [-30,  5, 15, 20, 20, 15,  5,-30],
+    [-30,  0, 15, 20, 20, 15,  0,-30],
+    [-30,  5, 10, 15, 15, 10,  5,-30],
+    [-40,-20,  0,  5,  5,  0,-20,-40],
+    [-50,-40,-30,-30,-30,-30,-40,-50]
+];
+
+const centerBonus = [
+    [-20,-10,-10,-10,-10,-10,-10,-20],
+    [-10,  0,  0,  0,  0,  0,  0,-10],
+    [-10,  0,  5, 10, 10,  5,  0,-10],
+    [-10,  0, 10, 20, 20, 10,  0,-10],
+    [-10,  0, 10, 20, 20, 10,  0,-10],
+    [-10,  0,  5, 10, 10,  5,  0,-10],
+    [-10,  0,  0,  0,  0,  0,  0,-10],
+    [-20,-10,-10,-10,-10,-10,-10,-20]
+];
+
 function evaluateBoard(b) {
     let s = 0;
     for (let r = 0; r < 8; r++) {
         for (let c = 0; c < 8; c++) {
-            if (b[r][c]) s += (b[r][c][0] === 'b' ? pieceValues[b[r][c][1]] : -pieceValues[b[r][c][1]]);
+            let piece = b[r][c];
+            if (piece) {
+                let isBlack = piece[0] === 'b';
+                let type = piece[1];
+                
+                // Material value
+                let val = pieceValues[type];
+                
+                // Positional value
+                if (type === 'p') {
+                    // Reverse rows for white pawns
+                    let rank = isBlack ? r : 7 - r;
+                    val += pawnEvalBlack[rank][c];
+                } else if (type === 'n') {
+                    val += knightEval[r][c];
+                } else {
+                    val += centerBonus[r][c]; // Discourage pieces strictly on edge
+                }
+
+                s += (isBlack ? val : -val); // AI is black, we want positive score for black
+            }
         }
     }
     return s;
