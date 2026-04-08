@@ -1,4 +1,5 @@
 let responseSelected = false; // Flag to prevent multiple clicks
+let dashboardActive = false; // Zen Mode only allowed when this is true
 
 function selectResponse(response) {
     if (responseSelected) return; // Prevent spamming
@@ -292,8 +293,12 @@ function startDashboardSequence() {
                                     audio.play().catch(e => console.log("Auto-play ditahan"));
                                     document.getElementById('play-icon').style.display = 'none';
                                     document.getElementById('pause-icon').style.display = 'block';
-                                    document.getElementById('album-art').style.animationPlayState = 'running';
                                 }
+                                
+                                // Enable Zen Mode after 1 second delay
+                                setTimeout(() => {
+                                    dashboardActive = true;
+                                }, 1000);
                             }, 600); // Waktu memudar scene welcome
                         }, 1200); // Tahan scene welcome selama 1.2 detik
                     }, 400); // Jeda transisi antar scene confirmation
@@ -374,25 +379,19 @@ function toggleZenMode() {
     var card = document.getElementById('main-container');
     var musicPlayer = document.getElementById('music-player');
     var controls = document.getElementById('bottom-right-controls');
-    var eyeOpen = document.getElementById('eye-open');
-    var eyeClosed = document.getElementById('eye-closed');
 
     if (card.classList.contains('hidden')) {
         // Matikan Zen Mode (Kembali Normal)
         card.classList.remove('hidden');
         card.classList.add('loaded');
-        musicPlayer.classList.remove('zen');
+        musicPlayer.classList.remove('zen music-player-zen-no-card');
         controls.classList.remove('zen');
-        eyeOpen.style.display = 'block';
-        eyeClosed.style.display = 'none';
     } else {
         // Aktifkan Zen Mode
         card.classList.remove('loaded');
         card.classList.add('hidden');
         musicPlayer.classList.add('zen');
         controls.classList.add('zen');
-        eyeOpen.style.display = 'none';
-        eyeClosed.style.display = 'block';
     }
 }
 
@@ -694,7 +693,7 @@ function getHardMove() {
     for (let i = 0; i < 9; i++) {
         if (tttBoard[i] === '') {
             tttBoard[i] = 'O';
-            let score = minimax(tttBoard, 0, false);
+            let score = tttMinimax(tttBoard, 0, false);
             tttBoard[i] = '';
             if (score > bestScore) {
                 bestScore = score;
@@ -705,8 +704,14 @@ function getHardMove() {
     return move;
 }
 
-function minimax(board, depth, isMaximizing) {
-    if (checkWin(board)) return isMaximizing ? -10 : 10;
+function checkWinPlayer(board, player) {
+    const wins = [[0, 1, 2], [3, 4, 5], [6, 7, 8], [0, 3, 6], [1, 4, 7], [2, 5, 8], [0, 4, 8], [2, 4, 6]];
+    return wins.some(w => board[w[0]] === player && board[w[1]] === player && board[w[2]] === player);
+}
+
+function tttMinimax(board, depth, isMaximizing) {
+    if (checkWinPlayer(board, 'O')) return 10 - depth;
+    if (checkWinPlayer(board, 'X')) return depth - 10;
     if (board.every(c => c !== '')) return 0;
 
     if (isMaximizing) {
@@ -714,7 +719,7 @@ function minimax(board, depth, isMaximizing) {
         for (let i = 0; i < 9; i++) {
             if (board[i] === '') {
                 board[i] = 'O';
-                let score = minimax(board, depth + 1, false);
+                let score = tttMinimax(board, depth + 1, false);
                 board[i] = '';
                 bestScore = Math.max(score, bestScore);
             }
@@ -725,7 +730,7 @@ function minimax(board, depth, isMaximizing) {
         for (let i = 0; i < 9; i++) {
             if (board[i] === '') {
                 board[i] = 'X';
-                let score = minimax(board, depth + 1, true);
+                let score = tttMinimax(board, depth + 1, true);
                 board[i] = '';
                 bestScore = Math.min(score, bestScore);
             }
@@ -1020,12 +1025,12 @@ function getLegalMoves(r, c) {
 
 function chessAI() {
     if (!chessGameActive || chessTurn !== 'black') return;
-    
+
     let allMoves = getAllMoves('black', chessBoard);
     if (allMoves.length === 0) return;
-    
+
     let bestMove = null;
-    
+
     if (chessDifficulty === 'easy') {
         // Easy: Random move, but try to capture if possible
         let captures = allMoves.filter(m => chessBoard[m.to.r][m.to.c] !== '');
@@ -1040,7 +1045,7 @@ function chessAI() {
         for (let m of allMoves) {
             let tempBoard = copyBoard(chessBoard);
             applyMove(tempBoard, m);
-            let score = minimax(tempBoard, 1, -Infinity, Infinity, false);
+            let score = chessMinimax(tempBoard, 1, -Infinity, Infinity, false);
             if (score > bestScore) {
                 bestScore = score;
                 bestMove = m;
@@ -1059,39 +1064,45 @@ function chessAI() {
         for (let m of allMoves) {
             let tempBoard = copyBoard(chessBoard);
             applyMove(tempBoard, m);
-            let score = minimax(tempBoard, 2, -Infinity, Infinity, false);
+            let score = chessMinimax(tempBoard, 2, -Infinity, Infinity, false);
             if (score > bestScore) {
                 bestScore = score;
                 bestMove = m;
             }
         }
     }
-    
+
     // Fallback if no move found (shouldn't happen unless checkmate)
     if (!bestMove && allMoves.length > 0) bestMove = allMoves[0];
 
-    if (bestMove) { 
-        executeMove(bestMove.from.r, bestMove.from.c, bestMove.to.r, bestMove.to.c); 
-        renderChess(); 
+    if (bestMove) {
+        executeMove(bestMove.from.r, bestMove.from.c, bestMove.to.r, bestMove.to.c);
+        renderChess();
     }
 }
 
-function minimax(board, depth, alpha, beta, isMaximizing) {
+function chessMinimax(board, depth, alpha, beta, isMaximizing) {
     if (depth === 0) return evaluateBoard(board);
 
     let moves = getAllMoves(isMaximizing ? 'black' : 'white', board);
     if (moves.length === 0) {
         // Simple checkmate/stalemate evaluation
-        // Assuming if no moves and in check -> mate
-        return isMaximizing ? -9000 : 9000; 
+        return isMaximizing ? -9000 : 9000;
     }
+
+    // Move sorting for alpha-beta efficiency (captures first)
+    moves.sort((a, b) => {
+        let valA = board[a.to.r][a.to.c] ? pieceValues[board[a.to.r][a.to.c][1]] : 0;
+        let valB = board[b.to.r][b.to.c] ? pieceValues[board[b.to.r][b.to.c][1]] : 0;
+        return valB - valA;
+    });
 
     if (isMaximizing) {
         let maxEval = -Infinity;
         for (let m of moves) {
             let tempBoard = copyBoard(board);
             applyMove(tempBoard, m);
-            let ev = minimax(tempBoard, depth - 1, alpha, beta, false);
+            let ev = chessMinimax(tempBoard, depth - 1, alpha, beta, false);
             maxEval = Math.max(maxEval, ev);
             alpha = Math.max(alpha, ev);
             if (beta <= alpha) break;
@@ -1102,7 +1113,7 @@ function minimax(board, depth, alpha, beta, isMaximizing) {
         for (let m of moves) {
             let tempBoard = copyBoard(board);
             applyMove(tempBoard, m);
-            let ev = minimax(tempBoard, depth - 1, alpha, beta, true);
+            let ev = chessMinimax(tempBoard, depth - 1, alpha, beta, true);
             minEval = Math.min(minEval, ev);
             beta = Math.min(beta, ev);
             if (beta <= alpha) break;
@@ -1127,36 +1138,36 @@ function applyMove(b, m) { b[m.to.r][m.to.c] = b[m.from.r][m.from.c]; b[m.from.r
 // Positional bonuses (Piece-Square Tables)
 // Simplified to encourage center control and pieces development
 const pawnEvalBlack = [
-    [0,  0,  0,  0,  0,  0,  0,  0],
-    [5, 10, 10,-20,-20, 10, 10,  5],
-    [5, -5,-10,  0,  0,-10, -5,  5],
-    [0,  0,  0, 20, 20,  0,  0,  0],
-    [5,  5, 10, 25, 25, 10,  5,  5],
+    [0, 0, 0, 0, 0, 0, 0, 0],
+    [5, 10, 10, -20, -20, 10, 10, 5],
+    [5, -5, -10, 0, 0, -10, -5, 5],
+    [0, 0, 0, 20, 20, 0, 0, 0],
+    [5, 5, 10, 25, 25, 10, 5, 5],
     [10, 10, 20, 30, 30, 20, 10, 10],
     [50, 50, 50, 50, 50, 50, 50, 50],
-    [0,  0,  0,  0,  0,  0,  0,  0]
+    [0, 0, 0, 0, 0, 0, 0, 0]
 ];
 
 const knightEval = [
-    [-50,-40,-30,-30,-30,-30,-40,-50],
-    [-40,-20,  0,  0,  0,  0,-20,-40],
-    [-30,  0, 10, 15, 15, 10,  0,-30],
-    [-30,  5, 15, 20, 20, 15,  5,-30],
-    [-30,  0, 15, 20, 20, 15,  0,-30],
-    [-30,  5, 10, 15, 15, 10,  5,-30],
-    [-40,-20,  0,  5,  5,  0,-20,-40],
-    [-50,-40,-30,-30,-30,-30,-40,-50]
+    [-50, -40, -30, -30, -30, -30, -40, -50],
+    [-40, -20, 0, 0, 0, 0, -20, -40],
+    [-30, 0, 10, 15, 15, 10, 0, -30],
+    [-30, 5, 15, 20, 20, 15, 5, -30],
+    [-30, 0, 15, 20, 20, 15, 0, -30],
+    [-30, 5, 10, 15, 15, 10, 5, -30],
+    [-40, -20, 0, 5, 5, 0, -20, -40],
+    [-50, -40, -30, -30, -30, -30, -40, -50]
 ];
 
 const centerBonus = [
-    [-20,-10,-10,-10,-10,-10,-10,-20],
-    [-10,  0,  0,  0,  0,  0,  0,-10],
-    [-10,  0,  5, 10, 10,  5,  0,-10],
-    [-10,  0, 10, 20, 20, 10,  0,-10],
-    [-10,  0, 10, 20, 20, 10,  0,-10],
-    [-10,  0,  5, 10, 10,  5,  0,-10],
-    [-10,  0,  0,  0,  0,  0,  0,-10],
-    [-20,-10,-10,-10,-10,-10,-10,-20]
+    [-20, -10, -10, -10, -10, -10, -10, -20],
+    [-10, 0, 0, 0, 0, 0, 0, -10],
+    [-10, 0, 5, 10, 10, 5, 0, -10],
+    [-10, 0, 10, 20, 20, 10, 0, -10],
+    [-10, 0, 10, 20, 20, 10, 0, -10],
+    [-10, 0, 5, 10, 10, 5, 0, -10],
+    [-10, 0, 0, 0, 0, 0, 0, -10],
+    [-20, -10, -10, -10, -10, -10, -10, -20]
 ];
 
 function evaluateBoard(b) {
@@ -1167,10 +1178,10 @@ function evaluateBoard(b) {
             if (piece) {
                 let isBlack = piece[0] === 'b';
                 let type = piece[1];
-                
+
                 // Material value
                 let val = pieceValues[type];
-                
+
                 // Positional value
                 if (type === 'p') {
                     // Reverse rows for white pawns
@@ -1189,31 +1200,69 @@ function evaluateBoard(b) {
     return s;
 }
 
-function getLegalMoves(r, c, boardOverride) {
-    const b = boardOverride || chessBoard;
-    const p = b[r][c]; if (!p) return [];
-    const t = p[1], col = p[0], moves = [];
-    const dirs = { 'r': [[0, 1], [0, -1], [1, 0], [-1, 0]], 'b': [[1, 1], [1, -1], [-1, 1], [-1, -1]], 'q': [[0, 1], [0, -1], [1, 0], [-1, 0], [1, 1], [1, -1], [-1, 1], [-1, -1]], 'k': [[0, 1], [0, -1], [1, 0], [-1, 0], [1, 1], [1, -1], [-1, 1], [-1, -1]], 'n': [[1, 2], [1, -2], [-1, 2], [-1, -2], [2, 1], [2, -1], [-2, 1], [-2, -1]] };
-    if (t === 'p') {
-        const f = (col === 'w' ? -1 : 1);
-        if (r + f >= 0 && r + f < 8 && b[r + f][c] === '') {
-            moves.push({ r: r + f, c: c });
-            if (((col === 'w' && r === 6) || (col === 'b' && r === 1)) && b[r + f][c] === '' && b[r + 2 * f][c] === '') moves.push({ r: r + 2 * f, c: c });
-        }
-        [[f, 1], [f, -1]].forEach(d => {
-            const nr = r + d[0], nc = c + d[1];
-            if (nr >= 0 && nr < 8 && nc >= 0 && nc < 8 && b[nr][nc] !== '' && b[nr][nc][0] !== col) moves.push({ r: nr, c: nc });
-        });
-    } else if (dirs[t]) {
-        const lim = (t === 'k' || t === 'n' ? 1 : 8);
-        dirs[t].forEach(d => {
-            for (let i = 1; i <= lim; i++) {
-                const nr = r + d[0] * i, nc = c + d[1] * i;
-                if (nr < 0 || nr >= 8 || nc < 0 || nc >= 8) break;
-                if (b[nr][nc] === '') moves.push({ r: nr, c: nc });
-                else { if (b[nr][nc][0] !== col) moves.push({ r: nr, c: nc }); break; }
+
+// --- Interactive Zen Mode (Long Press 3s) ---
+let holdTriggerTimer, zenTimer;
+let isZenHolding = false;
+const zenIndicator = document.getElementById('zen-hold-indicator');
+
+function startZenHold(e) {
+    if (!dashboardActive) return; 
+    
+    if (e.target.closest('a, button, .ttt-cell, canvas, .link-card, .music-player, .player-controls, .progress-container')) return;
+
+    if (!isZenHolding) {
+        isZenHolding = true;
+
+        // Start a 1-second silent timer before showing the UI
+        holdTriggerTimer = setTimeout(() => {
+            if (isZenHolding) {
+                // Now show the loading UI
+                const isCurrentlyZen = document.getElementById('main-container').classList.contains('hidden');
+                const textEl = zenIndicator.querySelector('.zen-text');
+                if (textEl) {
+                    textEl.innerText = isCurrentlyZen ? "ZEN: OFF" : "ZEN: ON";
+                }
+                
+                zenIndicator.classList.add('active');
+
+                // Start the 2-second completion timer
+                zenTimer = setTimeout(() => {
+                    if (isZenHolding) {
+                        toggleZenMode();
+                        cancelZenHold();
+                        if (navigator.vibrate) navigator.vibrate(60); 
+                    }
+                }, 2000); // 2 Seconds of visual loading
             }
-        });
+        }, 1000); // 1 Second of silent hold
     }
-    return moves;
 }
+
+function cancelZenHold() {
+    clearTimeout(holdTriggerTimer);
+    clearTimeout(zenTimer);
+    isZenHolding = false;
+    zenIndicator.classList.remove('active');
+}
+
+document.addEventListener('touchstart', startZenHold, { passive: true });
+document.addEventListener('mousedown', startZenHold);
+
+document.addEventListener('touchend', cancelZenHold);
+document.addEventListener('mouseup', cancelZenHold);
+
+document.addEventListener('touchmove', cancelZenHold, { passive: true });
+document.addEventListener('mousemove', (e) => {
+    if (isZenHolding && (Math.abs(e.movementX) > 5 || Math.abs(e.movementY) > 5)) {
+        cancelZenHold();
+    }
+});
+
+window.oncontextmenu = function(event) {
+    if (isZenHolding) {
+        event.preventDefault();
+        event.stopPropagation();
+        return false;
+    }
+};

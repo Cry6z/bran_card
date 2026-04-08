@@ -87,7 +87,6 @@ body::before {
     opacity: 0;
     transform: translateY(20px);
     will-change: transform, opacity;
-    /* GPU Compositing layer */
 }
 
 .container.loaded {
@@ -293,8 +292,10 @@ body::before {
 /* Links Section */
 .links-container {
     width: 100%;
-    display: flex;
-    flex-direction: column;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-auto-rows: max-content;
+    align-content: start;
     gap: 1rem;
     height: 250px;
     /* Pas untuk 4 link dengan padding normal */
@@ -324,13 +325,15 @@ body::before {
 
 .link-card {
     display: flex;
+    flex-direction: column;
     align-items: center;
-    justify-content: space-between;
+    justify-content: center;
+    gap: 0.75rem;
     width: 100%;
-    padding: 1rem 1.25rem;
+    padding: 1.25rem 1rem;
     background: var(--card-bg);
     border: 1px solid var(--card-border);
-    border-radius: 16px;
+    border-radius: 20px;
     text-decoration: none;
     color: var(--text-primary);
     font-weight: 500;
@@ -358,7 +361,7 @@ body::before {
 }
 
 .link-card:hover {
-    transform: translateY(-3px) scale(1.01);
+    transform: translateY(-3px) scale(1.02);
     box-shadow: var(--shadow-md);
     background: rgba(255, 255, 255, 0.1);
     border-color: rgba(255, 255, 255, 0.3);
@@ -373,59 +376,82 @@ body::before {
 }
 
 .link-card:nth-child(2) {
-    animation-delay: 0.3s;
+    animation-delay: 0.25s;
 }
 
 .link-card:nth-child(3) {
-    animation-delay: 0.4s;
+    animation-delay: 0.3s;
 }
 
 .link-card:nth-child(4) {
-    animation-delay: 0.5s;
+    animation-delay: 0.35s;
 }
 
 .link-card:nth-child(5) {
-    animation-delay: 0.6s;
+    animation-delay: 0.4s;
 }
 
 .link-card:nth-child(6) {
-    animation-delay: 0.7s;
+    animation-delay: 0.45s;
 }
 
 .link-card:nth-child(7) {
-    animation-delay: 0.8s;
+    animation-delay: 0.5s;
 }
 
 .link-card:nth-child(8) {
-    animation-delay: 0.9s;
+    animation-delay: 0.55s;
 }
 
 .link-icon {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 24px;
-    height: 24px;
+    width: 32px;
+    height: 32px;
     color: var(--text-primary);
 }
 
+.link-icon svg,
+.link-icon img {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: contain;
+}
+
 .link-text {
-    flex-grow: 1;
     text-align: center;
     font-size: 0.95rem;
 }
 
 .link-arrow {
-    width: 18px;
-    height: 18px;
-    opacity: 0;
-    transform: translateX(-10px);
-    transition: all 0.3s ease;
+    display: none;
 }
 
-.link-card:hover .link-arrow {
-    opacity: 1;
-    transform: translateX(0);
+.games-link-card {
+    grid-column: 1 / -1;
+    flex-direction: row;
+    justify-content: center;
+    padding: 1rem;
+    border-radius: 16px;
+    background: rgba(255, 255, 255, 0.05);
+    /* Slight contrast from normal card-bg */
+}
+
+.games-link-card:hover {
+    background: rgba(255, 255, 255, 0.15);
+    /* Slightly brighter hover */
+}
+
+.games-link-card .link-icon {
+    width: 24px;
+    height: 24px;
+}
+
+.games-link-card .link-text {
+    font-size: 1.05rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
 }
 
 /* Socials Section */
@@ -606,6 +632,68 @@ body::before {
 
 
 
+/* --- Zen Hold Indicator --- */
+#zen-hold-indicator {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0.8);
+    width: 120px;
+    height: 120px;
+    z-index: 3000;
+    pointer-events: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    transition: opacity 0.3s ease, transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+#zen-hold-indicator.active {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+}
+
+#zen-hold-indicator svg {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    transform: rotate(-90deg);
+}
+
+#zen-hold-indicator circle {
+    fill: none;
+    stroke-width: 6;
+    stroke-linecap: round;
+}
+
+#zen-hold-indicator .bg {
+    stroke: rgba(255, 255, 255, 0.1);
+}
+
+#zen-hold-indicator .progress {
+    stroke: #ffffff;
+    stroke-dasharray: 283; /* 2 * PI * 45 */
+    stroke-dashoffset: 283;
+}
+
+#zen-hold-indicator.active .progress {
+    animation: zenProgress 2s linear forwards;
+}
+
+@keyframes zenProgress {
+    from { stroke-dashoffset: 283; }
+    to { stroke-dashoffset: 0; }
+}
+
+.zen-text {
+    font-size: 0.9rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    color: #ffffff;
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+}
+
 /* --- Entry Screen --- */
 #entry-screen {
     position: fixed;
@@ -646,6 +734,7 @@ body::before {
 }
 
 /* --- Floating Music Player --- */
+/* --- Floating Music Player (No Card) --- */
 .music-player {
     position: fixed;
     bottom: 2rem;
@@ -654,16 +743,10 @@ body::before {
     display: flex;
     flex-direction: column;
     gap: 0.8rem;
-    background: rgba(255, 255, 255, 0.05);
-    /* Lighter glass */
-    border: 1px solid rgba(255, 255, 255, 0.15);
-    padding: 1.25rem 1.5rem;
-    border-radius: 28px;
-    width: 90%;
-    max-width: 360px;
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
-    backdrop-filter: blur(25px);
-    -webkit-backdrop-filter: blur(25px);
+    background: transparent; /* No Card Background */
+    border: none;
+    padding: 0;
+    width: 360px;
     animation: fadeUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
     animation-delay: 0.8s;
     opacity: 0;
@@ -721,18 +804,18 @@ body::before {
     width: auto;
 }
 
-.music-player.zen .song-title {
-    font-size: 1.2rem;
-    text-shadow: 0 0 15px rgba(0, 0, 0, 0.8), 0 2px 5px rgba(0, 0, 0, 0.5);
-    width: auto;
-    max-width: 300px;
-    overflow: hidden;
+.song-title {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+    margin-bottom: 0.1rem;
 }
 
-.music-player.zen .song-artist {
-    font-size: 0.9rem;
-    opacity: 0.9;
-    text-shadow: 0 0 10px rgba(0, 0, 0, 0.8), 0 2px 4px rgba(0, 0, 0, 0.5);
+.song-artist {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
 }
 
 
@@ -787,11 +870,12 @@ body::before {
         bottom: 1.25rem;
         left: 1rem;
         transform: none;
-        width: calc(100% - 100px);
+        width: calc(100% - 2rem);
         max-width: none;
-        padding: 1rem 1.25rem;
-        animation-name: fadeUp;
-        border-radius: 24px;
+        padding: 0;
+        background: transparent;
+        border: none;
+        backdrop-filter: none;
     }
 
     .music-player.zen {
@@ -1161,7 +1245,7 @@ body::before {
     }
 
     /* Zen Mode Specific: Activate the independent mobile quote */
-    .bottom-right-controls.zen ~ .mobile-zen-quote {
+    .bottom-right-controls.zen~.mobile-zen-quote {
         display: block !important;
         position: fixed;
         top: 2.5rem;
@@ -1671,7 +1755,7 @@ body::before {
     font-size: 1.25rem;
     font-weight: 300;
     letter-spacing: 0.5em;
-    text-transform: uppercase;
+    text-transform: lowercase;
     text-indent: 0.5em;
     color: #fff;
     opacity: 0;
@@ -1780,24 +1864,31 @@ body::before {
 
 .games-header {
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
     margin-bottom: 2rem;
+    position: relative;
 }
 
 .games-header h2 {
     font-size: 1.5rem;
     letter-spacing: 0.1em;
     font-weight: 700;
+    text-align: center;
 }
 
 .close-games {
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
     background: none;
     border: none;
     color: var(--text-secondary);
     font-size: 2rem;
     cursor: pointer;
     transition: color 0.3s;
+    line-height: 1;
 }
 
 .close-games:hover {
@@ -1806,10 +1897,11 @@ body::before {
 
 .games-tabs {
     display: flex;
+    justify-content: center;
     gap: 0.5rem;
     margin-bottom: 2rem;
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    padding-bottom: 0.5rem;
+    padding-bottom: 1rem;
 }
 
 .tab-btn {
@@ -1866,6 +1958,7 @@ body::before {
     font-size: 0.9rem;
     letter-spacing: 0.05em;
     color: var(--text-secondary);
+    text-align: center;
 }
 
 .game-controls {
@@ -1873,6 +1966,7 @@ body::before {
     gap: 1rem;
     margin-top: 1rem;
     align-items: center;
+    justify-content: center;
 }
 
 /* Custom Dropdown Styling */
@@ -2086,5 +2180,9 @@ body::before {
 }
 
 .chess-square:hover .chess-piece {
+    transform: scale(1.1);
+}
+
+chess-square:hover .chess-piece {
     transform: scale(1.1);
 }
