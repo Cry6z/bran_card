@@ -293,6 +293,8 @@ function startDashboardSequence() {
                                     audio.play().catch(e => console.log("Auto-play ditahan"));
                                     document.getElementById('play-icon').style.display = 'none';
                                     document.getElementById('pause-icon').style.display = 'block';
+                                    var albumArt = document.getElementById('album-art');
+                                    if (albumArt) albumArt.style.animationPlayState = 'running';
                                 }
                                 
                                 // Enable Zen Mode after 1 second delay
@@ -384,7 +386,7 @@ function toggleZenMode() {
         // Matikan Zen Mode (Kembali Normal)
         card.classList.remove('hidden');
         card.classList.add('loaded');
-        musicPlayer.classList.remove('zen music-player-zen-no-card');
+        musicPlayer.classList.remove('zen', 'music-player-zen-no-card');
         controls.classList.remove('zen');
     } else {
         // Aktifkan Zen Mode
@@ -398,11 +400,12 @@ function toggleZenMode() {
 // --- Fitur Typewriter Quotes ---
 const quotes = [
     '"ingfokan mabar bareng"',
-    '"strxdale or tourvillone?"',
+    '"aku nak mabar bareng"',
     '"hey kamu! ya, kamu keren!"',
-    '"aku suka.... eskrim"',
-    '"when yh...."',
-    '"skill issue btw"'
+    '"follow ig aku dawg"',
+    '"when yh.... when when...."',
+    '"stop jomok!"',
+    '"skill issue"'
 ];
 
 let quoteIndex = 0;
@@ -909,9 +912,23 @@ function renderChess() {
     const boardEl = document.getElementById('chess-board');
     if (!boardEl) return;
     boardEl.innerHTML = '';
-    document.getElementById('chess-status').innerText = (chessTurn === 'white' ? "Your Turn" : "AI Turn");
+    
+    let whiteInCheck = isKingInCheck('w', chessBoard);
+    let blackInCheck = isKingInCheck('b', chessBoard);
+    
+    if (chessGameActive) {
+        let currentMoves = getAllMoves(chessTurn, chessBoard);
+        if (currentMoves.length === 0) {
+            chessGameActive = false;
+            let inCheck = (chessTurn === 'white' && whiteInCheck) || (chessTurn === 'black' && blackInCheck);
+            document.getElementById('chess-status').innerText = inCheck ? (chessTurn === 'white' ? "Checkmate! AI Wins!" : "Checkmate! You Win!") : "Stalemate!";
+        } else {
+            let inCheck = (chessTurn === 'white' && whiteInCheck) || (chessTurn === 'black' && blackInCheck);
+            document.getElementById('chess-status').innerText = inCheck ? "CHECK! " + (chessTurn === 'white' ? "Your Turn" : "AI Turn") : (chessTurn === 'white' ? "Your Turn" : "AI Turn");
+        }
+    }
 
-    const validMoves = selectedSquare ? getLegalMoves(selectedSquare.r, selectedSquare.c) : [];
+    const validMoves = selectedSquare ? getValidMoves(selectedSquare.r, selectedSquare.c) : [];
 
     for (let r = 0; r < 8; r++) {
         for (let c = 0; c < 8; c++) {
@@ -926,6 +943,10 @@ function renderChess() {
                 const pieceEl = document.createElement('span');
                 pieceEl.className = 'chess-piece';
                 pieceEl.innerText = pieces[piece[0] === 'w' ? 'white' : 'black'][piece[1]];
+                
+                if (piece === 'wk' && whiteInCheck) square.style.backgroundColor = 'rgba(255, 60, 60, 0.7)';
+                if (piece === 'bk' && blackInCheck) square.style.backgroundColor = 'rgba(255, 60, 60, 0.7)';
+                
                 square.appendChild(pieceEl);
             }
 
@@ -943,7 +964,7 @@ function chessClick(r, c) {
     if (!chessGameActive || chessTurn !== 'white') return;
 
     const clickedPiece = chessBoard[r][c];
-    const validMoves = selectedSquare ? getLegalMoves(selectedSquare.r, selectedSquare.c) : [];
+    const validMoves = selectedSquare ? getValidMoves(selectedSquare.r, selectedSquare.c) : [];
     const isValidMove = validMoves.some(m => m.r === r && m.c === c);
 
     if (isValidMove) {
@@ -959,20 +980,13 @@ function chessClick(r, c) {
 }
 
 function executeMove(fromR, fromC, toR, toC) {
-    const captured = chessBoard[toR][toC];
     chessBoard[toR][toC] = chessBoard[fromR][fromC];
     chessBoard[fromR][fromC] = '';
-
-    if (captured && captured[1] === 'k') {
-        document.getElementById('chess-status').innerText = (chessTurn === 'white' ? "You Win!" : "AI Wins!");
-        chessGameActive = false;
-    }
-
     chessTurn = (chessTurn === 'white' ? 'black' : 'white');
 }
 
-function getLegalMoves(r, c) {
-    const piece = chessBoard[r][c];
+function getLegalMoves(r, c, b = chessBoard) {
+    const piece = b[r][c];
     if (!piece) return [];
     const type = piece[1];
     const color = piece[0];
@@ -989,18 +1003,18 @@ function getLegalMoves(r, c) {
 
     if (type === 'p') {
         const forward = (color === 'w' ? -1 : 1);
-        if (r + forward >= 0 && r + forward < 8 && chessBoard[r + forward][c] === '') {
+        if (r + forward >= 0 && r + forward < 8 && b[r + forward][c] === '') {
             moves.push({ r: r + forward, c: c });
             // Double move
             if ((color === 'w' && r === 6) || (color === 'b' && r === 1)) {
-                if (chessBoard[r + forward][c] === '' && chessBoard[r + 2 * forward][c] === '') moves.push({ r: r + 2 * forward, c: c });
+                if (b[r + forward][c] === '' && b[r + 2 * forward][c] === '') moves.push({ r: r + 2 * forward, c: c });
             }
         }
         // Captures
         [[forward, 1], [forward, -1]].forEach(d => {
             const nr = r + d[0], nc = c + d[1];
             if (nr >= 0 && nr < 8 && nc >= 0 && nc < 8) {
-                const target = chessBoard[nr][nc];
+                const target = b[nr][nc];
                 if (target !== '' && target[0] !== color) moves.push({ r: nr, c: nc });
             }
         });
@@ -1010,7 +1024,7 @@ function getLegalMoves(r, c) {
             for (let i = 1; i <= limit; i++) {
                 const nr = r + d[0] * i, nc = c + d[1] * i;
                 if (nr < 0 || nr >= 8 || nc < 0 || nc >= 8) break;
-                const target = chessBoard[nr][nc];
+                const target = b[nr][nc];
                 if (target === '') {
                     moves.push({ r: nr, c: nc });
                 } else {
@@ -1021,6 +1035,40 @@ function getLegalMoves(r, c) {
         });
     }
     return moves;
+}
+
+function getValidMoves(r, c, b = chessBoard) {
+    const moves = getLegalMoves(r, c, b);
+    const validMoves = [];
+    const color = b[r][c][0];
+    for (let m of moves) {
+        let tempBoard = copyBoard(b);
+        tempBoard[m.r][m.c] = tempBoard[r][c];
+        tempBoard[r][c] = '';
+        if (!isKingInCheck(color, tempBoard)) validMoves.push(m);
+    }
+    return validMoves;
+}
+
+function isKingInCheck(color, b = chessBoard) {
+    let kr = -1, kc = -1;
+    for (let r = 0; r < 8; r++) {
+        for (let c = 0; c < 8; c++) {
+            if (b[r][c] === color + 'k') { kr = r; kc = c; break; }
+        }
+        if (kr !== -1) break;
+    }
+    if (kr === -1) return false;
+    let opp = color === 'w' ? 'b' : 'w';
+    for (let r = 0; r < 8; r++) {
+        for (let c = 0; c < 8; c++) {
+            if (b[r][c].startsWith(opp)) {
+                let moves = getLegalMoves(r, c, b);
+                if (moves.some(m => m.r === kr && m.c === kc)) return true;
+            }
+        }
+    }
+    return false;
 }
 
 function chessAI() {
@@ -1077,7 +1125,7 @@ function chessAI() {
 
     if (bestMove) {
         executeMove(bestMove.from.r, bestMove.from.c, bestMove.to.r, bestMove.to.c);
-        renderChess();
+        renderChess(); // Re-render handles game over checks
     }
 }
 
@@ -1086,8 +1134,12 @@ function chessMinimax(board, depth, alpha, beta, isMaximizing) {
 
     let moves = getAllMoves(isMaximizing ? 'black' : 'white', board);
     if (moves.length === 0) {
-        // Simple checkmate/stalemate evaluation
-        return isMaximizing ? -9000 : 9000;
+        // Evaluate checkmate vs stalemate
+        let inCheck = isKingInCheck(isMaximizing ? 'b' : 'w', board);
+        if (inCheck) {
+            return isMaximizing ? -9000 - depth : 9000 + depth; // Prefer faster checkmates
+        }
+        return 0; // Stalemate
     }
 
     // Move sorting for alpha-beta efficiency (captures first)
@@ -1126,7 +1178,7 @@ function getAllMoves(color, b) {
     let m = [];
     for (let r = 0; r < 8; r++) {
         for (let c = 0; c < 8; c++) {
-            if (b[r][c].startsWith(color[0])) { getLegalMoves(r, c, b).forEach(l => m.push({ from: { r, c }, to: l })); }
+            if (b[r][c].startsWith(color[0])) { getValidMoves(r, c, b).forEach(l => m.push({ from: { r, c }, to: l })); }
         }
     }
     return m;
