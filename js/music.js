@@ -4,7 +4,7 @@ const playlist = [
     { title: "Midnight Club", artist: "ADTurnUp", src: "music/midnightclub.mp3", cover: "disk/midnightclub.png" },
     { title: "9PM In LA", artist: "ADTurnUp", src: "music/9pmla.mp3", cover: "disk/9pmla.png" },
     { title: "stargirl", artist: "ADTurnUp", src: "music/stargirl.mp3", cover: "disk/stargirl.png" },
-    { title: "IN THE DARKNESS", artist: "DXSTINY, HOOL", src: "music/inthedarkness.mp3", cover: "disk/inthedarkness.png" }
+    { title: "IN THE DARKNESS", artist: "DXSTINY, HOOL", src: "music/Inthedarkness.mp3", cover: "disk/inthedarkness.png" }
 ];
 
 // Shuffle the playlist on each load for variety
