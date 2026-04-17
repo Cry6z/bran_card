@@ -7,24 +7,27 @@ const playlist = [
     { title: "IN THE DARKNESS", artist: "DXSTINY, HOOL", src: "music/inthedarkness.mp3", cover: "disk/inthedarkness.png" }
 ];
 
-let currentSongIndex = Math.floor(Math.random() * playlist.length);
+// Shuffle the playlist on each load for variety
+let shuffledPlaylist = [...playlist].sort(() => Math.random() - 0.5);
+let currentSongIndex = 0;
 
 function loadSong(index) {
-    var audio = document.getElementById('bg-music');
-    var albumArt = document.getElementById('album-art');
-    var songTitleContainer = document.querySelector('.song-title');
-    var songTitleSpan = songTitleContainer.querySelector('span');
+    const audio = document.getElementById('bg-music');
+    const albumArt = document.getElementById('album-art');
+    const songTitleContainer = document.querySelector('.song-title');
+    const songTitleSpan = songTitleContainer.querySelector('span');
+    const artistNameEl = document.querySelector('.song-artist');
 
-    const title = playlist[index].title;
+    const song = shuffledPlaylist[index];
 
-    // Metadata Update
-    songTitleSpan.innerText = title;
-    document.querySelector('.song-artist').innerText = playlist[index].artist;
-    albumArt.src = playlist[index].cover;
+    // Update UI
+    songTitleSpan.innerText = song.title;
+    artistNameEl.innerText = song.artist;
+    albumArt.src = song.cover;
 
-    // Reset Marquee
+    // Reset Marquee for long titles
     songTitleContainer.classList.remove('marquee');
-    songTitleSpan.innerHTML = title;
+    songTitleSpan.innerHTML = song.title;
 
     setTimeout(() => {
         const textWidth = songTitleSpan.offsetWidth;
@@ -42,44 +45,45 @@ function loadSong(index) {
         }
     }, 50);
 
-    var isPlaying = !audio.paused && audio.currentTime > 0;
-    audio.src = playlist[index].src;
+    // Update source and preserve playing state
+    const isPlaying = !audio.paused && audio.currentTime > 0;
+    audio.src = song.src;
 
     if (isPlaying) {
-        audio.play();
+        audio.play().catch(e => console.log("Playback failed:", e));
     }
 }
 
 function nextSong() {
-    currentSongIndex = (currentSongIndex + 1) % playlist.length;
+    currentSongIndex = (currentSongIndex + 1) % shuffledPlaylist.length;
     loadSong(currentSongIndex);
 
-    var audio = document.getElementById('bg-music');
-    var isPlaying = document.getElementById('pause-icon').style.display === 'block';
-    if (isPlaying) audio.play();
+    const audio = document.getElementById('bg-music');
+    const isPlaying = document.getElementById('pause-icon').style.display === 'block';
+    if (isPlaying) audio.play().catch(e => console.log(e));
 }
 
 function prevSong() {
-    currentSongIndex = (currentSongIndex - 1 + playlist.length) % playlist.length;
+    currentSongIndex = (currentSongIndex - 1 + shuffledPlaylist.length) % shuffledPlaylist.length;
     loadSong(currentSongIndex);
 
-    var audio = document.getElementById('bg-music');
-    var isPlaying = document.getElementById('pause-icon').style.display === 'block';
-    if (isPlaying) audio.play();
+    const audio = document.getElementById('bg-music');
+    const isPlaying = document.getElementById('pause-icon').style.display === 'block';
+    if (isPlaying) audio.play().catch(e => console.log(e));
 }
 
 function togglePlay() {
-    var audio = document.getElementById('bg-music');
-    var playIcon = document.getElementById('play-icon');
-    var pauseIcon = document.getElementById('pause-icon');
-    var albumArt = document.getElementById('album-art');
+    const audio = document.getElementById('bg-music');
+    const playIcon = document.getElementById('play-icon');
+    const pauseIcon = document.getElementById('pause-icon');
+    const albumArt = document.getElementById('album-art');
 
     if (!audio.src || audio.src === window.location.href) {
         loadSong(currentSongIndex);
     }
 
     if (audio.paused) {
-        audio.play();
+        audio.play().catch(e => console.log("Can't play audio:", e));
         playIcon.style.display = 'none';
         pauseIcon.style.display = 'block';
         albumArt.style.animationPlayState = 'running';
@@ -92,12 +96,12 @@ function togglePlay() {
 }
 
 function updateProgress() {
-    var audio = document.getElementById('bg-music');
-    var progressBar = document.getElementById('progress-bar');
-    var currentTimeEl = document.getElementById('current-time');
+    const audio = document.getElementById('bg-music');
+    const progressBar = document.getElementById('progress-bar');
+    const currentTimeEl = document.getElementById('current-time');
 
     if (audio.duration) {
-        var progress = (audio.currentTime / audio.duration) * 100;
+        const progress = (audio.currentTime / audio.duration) * 100;
         progressBar.value = progress;
         progressBar.style.setProperty('--progress', `${progress}%`);
         currentTimeEl.innerText = formatTime(audio.currentTime);
@@ -105,9 +109,10 @@ function updateProgress() {
 }
 
 function setMetadata() {
-    var audio = document.getElementById('bg-music');
-    var totalTimeEl = document.getElementById('total-time');
-    var progressBar = document.getElementById('progress-bar');
+    const audio = document.getElementById('bg-music');
+    const totalTimeEl = document.getElementById('total-time');
+    const progressBar = document.getElementById('progress-bar');
+    
     totalTimeEl.innerText = formatTime(audio.duration);
     progressBar.value = 0;
     progressBar.style.setProperty('--progress', `0%`);
@@ -115,18 +120,19 @@ function setMetadata() {
 }
 
 function seekAudio() {
-    var audio = document.getElementById('bg-music');
-    var progressBar = document.getElementById('progress-bar');
-    var percent = progressBar.value;
-    var seekTime = (percent / 100) * audio.duration;
+    const audio = document.getElementById('bg-music');
+    const progressBar = document.getElementById('progress-bar');
+    const percent = progressBar.value;
+    const seekTime = (percent / 100) * audio.duration;
+    
     audio.currentTime = seekTime;
     progressBar.style.setProperty('--progress', `${percent}%`);
 }
 
 function formatTime(seconds) {
     if (isNaN(seconds)) return "0:00";
-    var min = Math.floor(seconds / 60);
-    var sec = Math.floor(seconds % 60);
-    if (sec < 10) sec = '0' + sec;
-    return min + ':' + sec;
+    const min = Math.floor(seconds / 60);
+    const sec = Math.floor(seconds % 60);
+    return `${min}:${sec < 10 ? '0' : ''}${sec}`;
 }
+
