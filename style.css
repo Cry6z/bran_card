@@ -784,7 +784,8 @@ body::before {
 }
 
 .music-player.zen .player-controls,
-.music-player.zen .progress-container {
+.music-player.zen .progress-container,
+.music-player.zen .song-info {
     opacity: 0;
     pointer-events: none;
     max-height: 0;

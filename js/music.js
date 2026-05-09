@@ -48,6 +48,7 @@ function loadSong(index) {
     // Update source and preserve playing state
     const isPlaying = !audio.paused && audio.currentTime > 0;
     audio.src = song.src;
+    audio.load(); // Ensure the browser fetches the new source
 
     if (isPlaying) {
         audio.play().catch(e => console.log("Playback failed:", e));

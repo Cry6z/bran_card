@@ -188,7 +188,7 @@
   <!-- Perspective Music Player -->
   <div class="music-player" id="music-player" style="display: none;">
     <div class="player-content">
-      <div class="album-art-wrapper">
+      <div class="album-art-wrapper" onclick="togglePlay()" style="cursor: pointer;">
         <img src="disk.png" alt="Album Art" id="album-art" class="album-art">
         <div class="album-hole"></div>
       </div>
@@ -227,7 +227,6 @@
     </div>
 
     <audio id="bg-music" onended="nextSong()" ontimeupdate="updateProgress()" onloadedmetadata="setMetadata()">
-      <source src="" type="audio/mpeg">
     </audio>
   </div>
 
